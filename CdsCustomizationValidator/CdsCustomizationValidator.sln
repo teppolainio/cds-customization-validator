@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdsCustomizationValidator.Console", "CdsCustomizationValidator.Console\CdsCustomizationValidator.Console.csproj", "{2C54BA86-9859-4488-A468-F09B2CA47169}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2C54BA86-9859-4488-A468-F09B2CA47169}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C54BA86-9859-4488-A468-F09B2CA47169}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C54BA86-9859-4488-A468-F09B2CA47169}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C54BA86-9859-4488-A468-F09B2CA47169}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {802F9443-2F44-4A45-9602-45128F2E405D}
+	EndGlobalSection
+EndGlobal
