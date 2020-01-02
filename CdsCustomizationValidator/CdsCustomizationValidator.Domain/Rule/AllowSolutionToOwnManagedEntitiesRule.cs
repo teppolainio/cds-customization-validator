@@ -17,7 +17,7 @@
         public AllowSolutionToOwnManagedEntitiesRule(
             bool allowSolutionToOwnManagedEntities)
         {
-            AllowSolutionToOwnManagedEntities = allowSolutionToOwnManagedEntities;
+            _allowSolutionToOwnManagedEntities = allowSolutionToOwnManagedEntities;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@
         {
             var result = true;
 
-            if (!AllowSolutionToOwnManagedEntities &&
+            if (!_allowSolutionToOwnManagedEntities &&
                 solutionEntity.IsOwnedBySolution &&
                 solutionEntity.Entity.IsManaged == true)
             {
@@ -35,10 +35,11 @@
                 result = false;
             }
 
-            return new ValidationResult(solutionEntity.Entity, result);
+            return new ValidationResult(solutionEntity.Entity,
+                                        result);
         }
 
-        private bool AllowSolutionToOwnManagedEntities { get; set; }
+        private readonly bool _allowSolutionToOwnManagedEntities;
     }
 
 }

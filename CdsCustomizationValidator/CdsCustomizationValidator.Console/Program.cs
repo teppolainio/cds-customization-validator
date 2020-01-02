@@ -21,7 +21,9 @@ namespace CdsCustomizationValidator.App
                 var solutionEntitities = solutionValidator.GetSolutionEntities(solutionName);
 
                 var rules = new List<CustomizationRule>() {
-                    new AllowSolutionToOwnManagedEntitiesRule(false)
+                    new AllowSolutionToOwnManagedEntitiesRule(false),
+                    new EntityPrefixRule("sar"),
+                    new AttributePrefixRule("sar")
                 };
 
                 var results = solutionValidator.Validate(solutionEntitities, rules);
