@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using CdsCustomizationValidator.Domain.Rule;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Metadata;
 using Microsoft.Xrm.Sdk.Query;
@@ -95,7 +96,7 @@ namespace CdsCustomizationValidator.Domain
 
         public Dictionary<EntityMetadata, List<ValidationResult>> Validate(
             IReadOnlyList<SolutionEntity> solutionEntitities,
-            CustomizationRules rules)
+            List<CustomizationRule> rules)
         {
             var results = new Dictionary<EntityMetadata, List<ValidationResult>>();
 
@@ -103,16 +104,12 @@ namespace CdsCustomizationValidator.Domain
             {
                 results.Add(solutionEntity.Entity, new List<ValidationResult>());
 
-                if (!rules.AllowSolutionToOwnManagedEntities &&
-                    solutionEntity.IsOwnedBySolution &&
-                    solutionEntity.Entity.IsManaged == true)
+                foreach (var rule in rules)
                 {
-                    var result = new ValidationResult() { 
-                        Entity = solutionEntity.Entity,
-                        Passed = false
-                    };
-                    results[solutionEntity.Entity].Add(result);
+                    var validationResult = rule.Validate(solutionEntity);
+                    results[solutionEntity.Entity].Add(validationResult);
                 }
+
             }
 
             return results;

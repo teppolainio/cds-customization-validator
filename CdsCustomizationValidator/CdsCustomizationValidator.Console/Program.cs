@@ -1,6 +1,8 @@
 ﻿using CdsCustomizationValidator.Domain;
+using CdsCustomizationValidator.Domain.Rule;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CdsCustomizationValidator.App
@@ -18,8 +20,8 @@ namespace CdsCustomizationValidator.App
 
                 var solutionEntitities = solutionValidator.GetSolutionEntities(solutionName);
 
-                var rules = new CustomizationRules() {
-                    AllowSolutionToOwnManagedEntities = false
+                var rules = new List<CustomizationRule>() {
+                    new AllowSolutionToOwnManagedEntitiesRule(false)
                 };
 
                 var results = solutionValidator.Validate(solutionEntitities, rules);
@@ -27,7 +29,7 @@ namespace CdsCustomizationValidator.App
                 foreach (var result in results)
                 {
                     Console.Write($"{result.Key.LogicalName}: ");
-                    if (!result.Value.Any()) {
+                    if (result.Value.All(r => r.Passed)) {
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Passed validation.");
                         Console.ResetColor();
