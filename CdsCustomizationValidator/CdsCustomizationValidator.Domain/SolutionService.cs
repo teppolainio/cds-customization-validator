@@ -12,7 +12,12 @@ namespace CdsCustomizationValidator.Domain
     public class SolutionService
     {
 
-        public IList<SolutionEntity> GetSolutionEntities(string uniqueSolutionName)
+        public SolutionService(IOrganizationService service)
+        {
+            this.service = service;
+        }
+
+        public IReadOnlyList<SolutionEntity> GetSolutionEntities(string uniqueSolutionName)
         {
 
             Console.WriteLine($"Handling solution {uniqueSolutionName}.");
@@ -88,9 +93,29 @@ namespace CdsCustomizationValidator.Domain
             return retval;
         }
 
-        public SolutionService(IOrganizationService service)
+        public Dictionary<EntityMetadata, List<ValidationResult>> Validate(
+            IReadOnlyList<SolutionEntity> solutionEntitities,
+            CustomizationRules rules)
         {
-            this.service = service;
+            var results = new Dictionary<EntityMetadata, List<ValidationResult>>();
+
+            foreach (var solutionEntity in solutionEntitities)
+            {
+                results.Add(solutionEntity.Entity, new List<ValidationResult>());
+
+                if (!rules.AllowSolutionToOwnManagedEntities &&
+                    solutionEntity.IsOwnedBySolution &&
+                    solutionEntity.Entity.IsManaged == true)
+                {
+                    var result = new ValidationResult() { 
+                        Entity = solutionEntity.Entity,
+                        Passed = false
+                    };
+                    results[solutionEntity.Entity].Add(result);
+                }
+            }
+
+            return results;
         }
 
         private readonly IOrganizationService service;
