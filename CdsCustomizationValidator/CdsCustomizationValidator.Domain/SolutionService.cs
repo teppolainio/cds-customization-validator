@@ -96,7 +96,7 @@ namespace CdsCustomizationValidator.Domain
 
         public Dictionary<EntityMetadata, List<ValidationResult>> Validate(
             IReadOnlyList<SolutionEntity> solutionEntitities,
-            List<CustomizationRule> rules)
+            List<CustomizationRuleBase> rules)
         {
             var results = new Dictionary<EntityMetadata, List<ValidationResult>>();
 

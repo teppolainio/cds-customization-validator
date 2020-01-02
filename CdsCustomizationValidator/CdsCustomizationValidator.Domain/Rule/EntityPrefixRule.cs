@@ -5,8 +5,16 @@
     /// Rule to check that all  custom unmanaged entities
     /// owned by solution start with correct schema name prefix.
     /// </summary>
-    public class EntityPrefixRule : CustomizationRule
+    public class EntityPrefixRule : CustomizationRuleBase
     {
+
+        /// <summary>
+        /// See <see cref="CustomizationRuleBase.Description"/>.
+        /// </summary>
+        public override string Description
+        {
+            get { return $"Entity prefix must be \"{_schemaPrefix}\"."; }
+        }
 
         /// <summary>
         /// Creates a new rule instance requiring given prefix.
@@ -16,11 +24,11 @@
         /// </param>
         public EntityPrefixRule(string schemaPrefix)
         {
-            _schemaPrefix = schemaPrefix.TrimEnd('_') + "_";
+            _schemaPrefix = schemaPrefix.TrimEnd('_');
         }
 
         /// <summary>
-        /// See <see cref="CustomizationRule.ValidateRule(SolutionEntity)"/>.
+        /// See <see cref="CustomizationRuleBase.ValidateRule(SolutionEntity)"/>.
         /// </summary>
         protected override ValidationResult ValidateRule(
             SolutionEntity solutionEntity)
@@ -30,13 +38,14 @@
             if (solutionEntity.IsOwnedBySolution &&
                 solutionEntity.Entity.IsManaged == false &&
                 solutionEntity.Entity.IsCustomEntity == true &&
-                !solutionEntity.Entity.SchemaName.StartsWith(_schemaPrefix))
+                !solutionEntity.Entity.SchemaName.StartsWith(_schemaPrefix + "_"))
             {
                 entityNamePassed = false;
             }
 
             return new ValidationResult(solutionEntity.Entity,
-                                        entityNamePassed);
+                                        entityNamePassed,
+                                        this);
         }
 
         private readonly string _schemaPrefix;

@@ -58,8 +58,8 @@
     <Compile Include="AttributeValidationResult.cs" />
     <Compile Include="Rule\AllowSolutionToOwnManagedEntitiesRule.cs" />
     <Compile Include="Rule\AttributePrefixRule.cs" />
-    <Compile Include="Rule\CustomizationRule.cs" />
-    <Compile Include="Rule\SchemaNamePrefixRule.cs" />
+    <Compile Include="Rule\CustomizationRuleBase.cs" />
+    <Compile Include="Rule\EntityPrefixRule.cs" />
     <Compile Include="SolutionEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionService.cs" />

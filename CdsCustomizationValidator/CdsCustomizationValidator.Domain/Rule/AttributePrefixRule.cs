@@ -6,8 +6,16 @@ namespace CdsCustomizationValidator.Domain.Rule
     /// Rule to check that all unmanaged custom fields in solution start with
     /// correct schema name prefix.
     /// </summary>
-    public class AttributePrefixRule : CustomizationRule
+    public class AttributePrefixRule : CustomizationRuleBase
     {
+
+        /// <summary>
+        /// See <see cref="CustomizationRuleBase.Description"/>.
+        /// </summary>
+        public override string Description
+        {
+            get { return $"Attribute prefix must be \"{_schemaPrefix}\"."; }
+        }
 
         /// <summary>
         /// Creates a new rule instance requiring given prefix.
@@ -17,11 +25,11 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </param>
         public AttributePrefixRule(string schemaPrefix)
         {
-            _schemaPrefix = schemaPrefix.TrimEnd('_') + "_";
+            _schemaPrefix = schemaPrefix.TrimEnd('_');
         }
 
         /// <summary>
-        /// See <see cref="CustomizationRule.ValidateRule(SolutionEntity)"/>.
+        /// See <see cref="CustomizationRuleBase.ValidateRule(SolutionEntity)"/>.
         /// </summary>
         protected override ValidationResult ValidateRule(
             SolutionEntity solutionEntity)
@@ -31,10 +39,11 @@ namespace CdsCustomizationValidator.Domain.Rule
                                                              a.IsCustomAttribute == true);
 
             var attributeFailures = customAttributes.Where(a => !a.SchemaName
-                                                                  .StartsWith(_schemaPrefix));
+                                                                  .StartsWith(_schemaPrefix + "_"));
 
             return new AttributeValidationResult(solutionEntity.Entity,
-                                                 attributeFailures);
+                                                 attributeFailures,
+                                                 this);
         }
 
         private readonly string _schemaPrefix;

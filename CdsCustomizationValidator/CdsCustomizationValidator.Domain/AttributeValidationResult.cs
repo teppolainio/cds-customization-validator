@@ -24,12 +24,38 @@ namespace CdsCustomizationValidator.Domain
         /// <param name="failingAttributes">
         /// Attributes which did not pass the validation.
         /// </param>
+        /// <param name="validatedRule">
+        /// Rule which was validated.
+        /// </param>
         public AttributeValidationResult(
             EntityMetadata entity,
-            IEnumerable<AttributeMetadata> failingAttributes)
-            : base(entity, !failingAttributes.Any())
+            IEnumerable<AttributeMetadata> failingAttributes,
+            Rule.CustomizationRuleBase validatedRule)
+            : base(entity, !failingAttributes.Any(), validatedRule)
         {
             FailingAttributes = failingAttributes;
+        }
+
+        /// <summary>
+        /// See <see cref="ValidationResult.FormatValidationResult"/>.
+        /// </summary>
+        /// <returns></returns>
+        public override string FormatValidationResult()
+        {
+            var resultStr = base.FormatValidationResult();
+
+            if (FailingAttributes.Any())
+            {
+                resultStr += " Failures on attributes";
+                foreach (var attr in FailingAttributes)
+                {
+                    resultStr += $" {attr.SchemaName},";
+                }
+                resultStr.TrimEnd(',');
+                resultStr += ".";
+            }
+
+            return resultStr;
         }
 
 

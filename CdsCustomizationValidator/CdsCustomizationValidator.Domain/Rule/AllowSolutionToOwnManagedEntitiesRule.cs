@@ -4,8 +4,15 @@
     /// Rule to check if entity is managed and owned by solution. This can be
     /// either allowed or disallowed. You probably do not want to allow this.
     /// </summary>
-    public class AllowSolutionToOwnManagedEntitiesRule : CustomizationRule
+    public class AllowSolutionToOwnManagedEntitiesRule : CustomizationRuleBase
     {
+
+        /// <summary>
+        /// See <see cref="CustomizationRuleBase.Description"/>.
+        /// </summary>
+        public override string Description {
+            get { return "Allow solution to own managed entities."; }
+        }
 
         /// <summary>
         /// Creates a new rule instance.
@@ -21,7 +28,7 @@
         }
 
         /// <summary>
-        /// See <see cref="CustomizationRule.ValidateRule(SolutionEntity)"/>.
+        /// See <see cref="CustomizationRuleBase.ValidateRule(SolutionEntity)"/>.
         /// </summary>
         protected override ValidationResult ValidateRule(SolutionEntity solutionEntity)
         {
@@ -36,10 +43,12 @@
             }
 
             return new ValidationResult(solutionEntity.Entity,
-                                        result);
+                                        result,
+                                        this);
         }
 
         private readonly bool _allowSolutionToOwnManagedEntities;
+
     }
 
 }

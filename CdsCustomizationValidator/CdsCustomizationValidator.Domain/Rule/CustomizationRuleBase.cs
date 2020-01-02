@@ -4,8 +4,19 @@
     /// <summary>
     /// Base class for customization rule.
     /// </summary>
-    public abstract class CustomizationRule
+    public abstract class CustomizationRuleBase
     {
+
+        /// <summary>
+        /// Descriptive name for this rule. This can be displayed on various
+        /// UI representations.
+        /// </summary>
+        /// <remarks>
+        /// This should be pretty short (under 60 characters).
+        /// Description should form a sentence ending with dot.
+        /// </remarks>
+        public abstract string Description { get; }
+
         /// <summary>
         /// Checks whether rule is adhered or not.
         /// </summary>

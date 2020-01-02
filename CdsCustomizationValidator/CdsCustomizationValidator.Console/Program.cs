@@ -20,7 +20,7 @@ namespace CdsCustomizationValidator.App
 
                 var solutionEntitities = solutionValidator.GetSolutionEntities(solutionName);
 
-                var rules = new List<CustomizationRule>() {
+                var rules = new List<CustomizationRuleBase>() {
                     new AllowSolutionToOwnManagedEntitiesRule(false),
                     new EntityPrefixRule("sar"),
                     new AttributePrefixRule("sar")
@@ -39,8 +39,16 @@ namespace CdsCustomizationValidator.App
                     }
 
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Failed validation.");
+                    Console.Write("Failed validation.");
                     Console.ResetColor();
+                    Console.WriteLine(" Failures are:");
+
+                    var failures = result.Value
+                                         .Where(r => !r.Passed);
+                    foreach (var failure in failures)
+                    {
+                        Console.WriteLine("  * " + failure.FormatValidationResult());
+                    }
                 }
 
                 Console.WriteLine("Press any key to exit...");
