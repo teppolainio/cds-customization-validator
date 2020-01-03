@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xrm.Sdk.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
@@ -96,19 +97,19 @@ namespace CdsCustomizationValidator.Domain.Rule
             SolutionEntity solutionEntity)
         {
 
-            var entity = solutionEntity.Entity;
-
             bool validationPassed = false;
-            if (solutionEntity.IsOwnedBySolution == false ||
-                entity.IsManaged == true ||
-                _excludedSchemaNames.Contains(entity.SchemaName))
+            switch (_scope)
             {
-                validationPassed = true;
-            }
-            else
-            {
-                validationPassed = Pattern.IsMatch(entity.SchemaName);
-            }       
+                case RuleScope.Entity:
+                    validationPassed = ValidateEntityScope(solutionEntity);
+                    break;
+                case RuleScope.Attribute:
+                    throw new NotImplementedException();
+                    //break;
+                default:
+                    throw new NotImplementedException(
+                        $"Implementation is missing for scope {_scope}.");
+            }     
 
             var retval = new RegexValidationResult(solutionEntity.Entity,
                                                    validationPassed,
@@ -121,5 +122,25 @@ namespace CdsCustomizationValidator.Domain.Rule
 
         private readonly RuleScope _scope;
         private readonly ICollection<string> _excludedSchemaNames;
+
+        private bool ValidateEntityScope(SolutionEntity solutionEntity)
+        {
+            bool validationPassed;
+
+            var entity = solutionEntity.Entity;
+
+            if (solutionEntity.IsOwnedBySolution == false ||
+               entity.IsManaged == true ||
+               _excludedSchemaNames.Contains(entity.SchemaName))
+            {
+                validationPassed = true;
+            }
+            else
+            {
+                validationPassed = Pattern.IsMatch(entity.SchemaName);
+            }
+
+            return validationPassed;
+        }
     }
 }
