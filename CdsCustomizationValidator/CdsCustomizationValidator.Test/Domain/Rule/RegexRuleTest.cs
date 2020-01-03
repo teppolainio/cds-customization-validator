@@ -127,8 +127,8 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             Assert.True(results.Passed);
         }
 
-        [Fact(DisplayName = "RegexRule: Entity first letter is a capital letter.")]
-        public void EnsureEntityFirstLetterIsCapitalLetterTest() {
+        [Fact(DisplayName = "RegexRule: Entity first letter is a capital letter check succeeds.")]
+        public void EnsureEntityFirstLetterIsCapitalLetterSucceedsTest() {
             EntityMetadata entity = new EntityMetadata()
             {
                 SchemaName = "foobar_MyMagnificientEntity",
@@ -152,6 +152,34 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             var results = ruleToTest.Validate(validSolutionEntity);
 
             Assert.True(results.Passed);
+        }
+
+        [Fact(DisplayName = "RegexRule: Entity first letter is a capital letter check fails.")]
+        public void EnsureEntityFirstLetterIsCapitalLetterFailsTest()
+        {
+            EntityMetadata entity = new EntityMetadata()
+            {
+                SchemaName = "foobar_myMagnificientEntity",
+            };
+            entity.SetSealedPropertyValue("IsManaged", false);
+            entity.SetSealedPropertyValue("IsCustomEntity", true);
+
+            List<AttributeMetadata> attributes = null;
+
+            var isOwnedBySolution = true;
+
+            var validSolutionEntity = new SolutionEntity(entity,
+                                                         attributes,
+                                                         isOwnedBySolution);
+
+            var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+            var scope = RuleScope.Entity;
+
+            var ruleToTest = new RegexRule(regexPattern, scope);
+
+            var results = ruleToTest.Validate(validSolutionEntity);
+
+            Assert.False(results.Passed);
         }
 
     }

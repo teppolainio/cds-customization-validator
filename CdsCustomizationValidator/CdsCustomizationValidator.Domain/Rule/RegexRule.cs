@@ -58,15 +58,22 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </summary>
         protected override ValidationResult ValidateRule(SolutionEntity solutionEntity)
         {
+
+            bool validationPassed = false;
             if (solutionEntity.IsOwnedBySolution == false ||
                 solutionEntity.Entity.IsManaged == true)
             {
-                return new ValidationResult(solutionEntity.Entity,
-                                            true,
-                                            this);
+                validationPassed = true;
             }
+            else
+            {
+                validationPassed = _regexPattern.IsMatch(solutionEntity.Entity
+                                                                       .SchemaName);
+            }       
 
-            throw new NotImplementedException();
+            return new ValidationResult(solutionEntity.Entity,
+                                        validationPassed,
+                                        this);
         }
 
         private readonly Regex _regexPattern;
