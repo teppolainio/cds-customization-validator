@@ -58,6 +58,7 @@
     <Compile Include="AttributeValidationResult.cs" />
     <Compile Include="Infrastructure\DAO\DAOEntities.cs" />
     <Compile Include="Infrastructure\DAO\OptionSets.cs" />
+    <Compile Include="RegexValidationResult.cs" />
     <Compile Include="Rule\AllowSolutionToOwnManagedEntitiesRule.cs" />
     <Compile Include="Rule\AttributePrefixRule.cs" />
     <Compile Include="Rule\CustomizationRuleBase.cs" />

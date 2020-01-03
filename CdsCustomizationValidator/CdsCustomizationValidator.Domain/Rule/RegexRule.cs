@@ -24,7 +24,7 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </summary>
         public override string Description
         {
-            get { return $"Logical name of {_scope} must match to regular expression pattern {_regexPattern}."; }
+            get { return $"Schema name of {_scope} must match to regular expression pattern {Pattern}."; }
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace CdsCustomizationValidator.Domain.Rule
         {
             try
             {
-                _regexPattern = new Regex(regexPattern);
+                Pattern = new Regex(regexPattern);
             }
             catch(ArgumentException ex) {
                 throw new ArgumentException(
@@ -56,7 +56,8 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// <summary>
         /// See <see cref="CustomizationRuleBase.ValidateRule(SolutionEntity)"/>.
         /// </summary>
-        protected override ValidationResult ValidateRule(SolutionEntity solutionEntity)
+        protected override ValidationResult ValidateRule(
+            SolutionEntity solutionEntity)
         {
 
             bool validationPassed = false;
@@ -67,16 +68,19 @@ namespace CdsCustomizationValidator.Domain.Rule
             }
             else
             {
-                validationPassed = _regexPattern.IsMatch(solutionEntity.Entity
-                                                                       .SchemaName);
+                validationPassed = Pattern.IsMatch(solutionEntity.Entity
+                                                                 .SchemaName);
             }       
 
-            return new ValidationResult(solutionEntity.Entity,
-                                        validationPassed,
-                                        this);
+            var retval = new RegexValidationResult(solutionEntity.Entity,
+                                                   validationPassed,
+                                                   this);
+
+            return retval as ValidationResult;
         }
 
-        private readonly Regex _regexPattern;
+        internal Regex Pattern { get; }
+
         private readonly RuleScope _scope;
 
     }

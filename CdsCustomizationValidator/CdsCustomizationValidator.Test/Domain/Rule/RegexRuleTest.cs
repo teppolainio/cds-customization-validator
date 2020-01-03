@@ -1,6 +1,7 @@
 ﻿using CdsCustomizationValidator.Domain;
 using CdsCustomizationValidator.Domain.Rule;
 using FakeXrmEasy.Extensions;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,8 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var ruleToTest = new RegexRule(regexPattern, scope);
 
-            Assert.EndsWith($" must match to regular expression pattern {regexPattern}.",
-                            ruleToTest.Description);
+            Assert.Equal($"Schema name of Entity must match to regular expression pattern {regexPattern}.",
+                         ruleToTest.Description);
         }
 
         [Fact(DisplayName = "RegexRule: Invalid pattern must throw an exception.")]
@@ -180,6 +181,39 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             var results = ruleToTest.Validate(validSolutionEntity);
 
             Assert.False(results.Passed);
+        }
+
+        [Fact(DisplayName = "RegexRule: Entity first letter is a capital letter check fails.")]
+        public void EntityFirstLetterIsCapitalLetterFailureDescriptionIsCorrectTest()
+        {
+            EntityMetadata entity = new EntityMetadata()
+            {
+                SchemaName = "foobar_myMagnificientEntity",
+                DisplayName = new Label() {
+                    UserLocalizedLabel = new LocalizedLabel("Suurenmoinen entiteetti",
+                                                            1035)
+                }
+            };
+            entity.SetSealedPropertyValue("IsManaged", false);
+            entity.SetSealedPropertyValue("IsCustomEntity", true);
+
+            List<AttributeMetadata> attributes = null;
+
+            var isOwnedBySolution = true;
+
+            var validSolutionEntity = new SolutionEntity(entity,
+                                                         attributes,
+                                                         isOwnedBySolution);
+
+            var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+            var scope = RuleScope.Entity;
+
+            var ruleToTest = new RegexRule(regexPattern, scope);
+
+            var results = ruleToTest.Validate(validSolutionEntity);
+
+            Assert.Contains($"Entity schema name {entity.SchemaName} doesn't match given pattern \"{regexPattern}\".",
+                            results.FormatValidationResult());
         }
 
     }

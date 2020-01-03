@@ -36,7 +36,7 @@ namespace CdsCustomizationValidator.Domain
         {
             Entity = entity;
             Passed = passed;
-            _validatedRule = validatedRule;
+            ValidatedRule = validatedRule;
         }
 
         /// <summary>
@@ -48,14 +48,14 @@ namespace CdsCustomizationValidator.Domain
         /// </returns>
         public virtual string FormatValidationResult()
         {
-            var retVal = $"Rule: {_validatedRule.Description} " +
+            var retVal = $"Rule: {ValidatedRule.Description} " +
                          (Passed ? "Succeeded" : "Failed") + " for entity " +
                          $"\"{Entity.DisplayName.UserLocalizedLabel.Label}\" " +
                          $"({Entity.SchemaName}).";
             return retVal;
         }
 
-        private readonly Rule.CustomizationRuleBase _validatedRule = null;
+        protected Rule.CustomizationRuleBase ValidatedRule { get; }
 
     }
 

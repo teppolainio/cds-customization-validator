@@ -23,7 +23,9 @@ namespace CdsCustomizationValidator.App
                 var rules = new List<CustomizationRuleBase>() {
                     new AllowSolutionToOwnManagedEntitiesRule(false),
                     new EntityPrefixRule("sar"),
-                    new AttributePrefixRule("sar")
+                    new AttributePrefixRule("sar"),
+                    new RegexRule(@"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$",
+                                  RuleScope.Entity)
                 };
 
                 var results = solutionValidator.Validate(solutionEntitities, rules);
