@@ -104,6 +104,8 @@
   <ItemGroup>
     <Compile Include="Domain\Rule\EntityPrefixRuleTest.cs" />
     <Compile Include="Domain\Rule\RegexRuleTest.cs" />
+    <Compile Include="Domain\Rule\RegexRuleTest_AttributeScope.cs" />
+    <Compile Include="Domain\Rule\RegexRuleTest_EntityScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

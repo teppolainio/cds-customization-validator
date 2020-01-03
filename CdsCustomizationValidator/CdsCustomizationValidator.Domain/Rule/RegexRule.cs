@@ -10,7 +10,14 @@ namespace CdsCustomizationValidator.Domain.Rule
     /// Scope of the rule.
     /// </summary>
     public enum RuleScope { 
-        Entity
+        /// <summary>
+        /// Entities.
+        /// </summary>
+        Entity,
+        /// <summary>
+        /// Attributes of an entity.
+        /// </summary>
+        Attribute
     };
 
     /// <summary>
