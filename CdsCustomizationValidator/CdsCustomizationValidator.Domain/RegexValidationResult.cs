@@ -80,11 +80,29 @@ namespace CdsCustomizationValidator.Domain
 
             var resultStr = base.FormatValidationResult();
 
-            if (!Passed)
+            if (Passed) {
+                return resultStr;
+            }
+
+            if (rule.Scope == RuleScope.Entity)
             {
 
                 resultStr += $" Entity schema name {Entity.SchemaName} " +
                             $"doesn't match given pattern \"{ rule.Pattern }\".";
+            }
+            else if (rule.Scope == RuleScope.Attribute) {
+
+                resultStr += $"Following attributes do not match given pattern \"{rule.Pattern}\":";
+
+                foreach (var attr in _failingAttributes)
+                {
+                    resultStr += $" {attr.SchemaName},";
+                }
+                resultStr += $"{resultStr.TrimEnd(',')}.";
+            }
+            else
+            {
+                throw new NotImplementedException();
             }
 
             return resultStr;

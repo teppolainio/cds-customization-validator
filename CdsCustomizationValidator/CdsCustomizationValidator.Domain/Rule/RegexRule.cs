@@ -98,25 +98,21 @@ namespace CdsCustomizationValidator.Domain.Rule
             SolutionEntity solutionEntity)
         {
 
-            bool validationPassed = false;
+            RegexValidationResult validationResult = null;
             switch (Scope)
             {
                 case RuleScope.Entity:
-                    validationPassed = ValidateEntityScope(solutionEntity);
+                    validationResult = ValidateEntityScope(solutionEntity);
                     break;
                 case RuleScope.Attribute:
-                    validationPassed = ValidateAttributeScope(solutionEntity);
+                    validationResult = ValidateAttributeScope(solutionEntity);
                     break;
                 default:
                     throw new NotImplementedException(
                         $"Implementation is missing for scope {Scope}.");
             }     
 
-            var retval = new RegexValidationResult(solutionEntity.Entity,
-                                                   validationPassed,
-                                                   this);
-
-            return retval as ValidationResult;
+            return validationResult as ValidationResult;
         }
 
         /// <summary>
@@ -131,7 +127,8 @@ namespace CdsCustomizationValidator.Domain.Rule
 
         private readonly ICollection<string> _excludedSchemaNames;
 
-        private bool ValidateEntityScope(SolutionEntity solutionEntity)
+        private RegexValidationResult ValidateEntityScope(
+            SolutionEntity solutionEntity)
         {
             bool validationPassed;
 
@@ -148,29 +145,37 @@ namespace CdsCustomizationValidator.Domain.Rule
                 validationPassed = Pattern.IsMatch(entity.SchemaName);
             }
 
-            return validationPassed;
+            return new RegexValidationResult(solutionEntity.Entity,
+                                             validationPassed,
+                                             this);
         }
 
-        private bool ValidateAttributeScope(SolutionEntity solutionEntity)
+        private RegexValidationResult ValidateAttributeScope(
+            SolutionEntity solutionEntity)
         {
             var attributesToCheck = solutionEntity.Attributes
                                                   .Where(a => a.IsManaged != true &&
                                                               a.IsCustomAttribute == true);
 
-
-            var validationPassed = true;
+            var failingAttributes = new List<AttributeMetadata>();
 
             foreach (var attribute in attributesToCheck)
             {
+                if (_excludedSchemaNames.Contains(attribute.SchemaName))
+                {
+                    continue;
+                }
+
                 var pass = Pattern.IsMatch(attribute.SchemaName);
 
                 if (!pass) {
-                    validationPassed = false;
-                    break;
+                    failingAttributes.Add(attribute);
                 }
             }
 
-            return validationPassed;
+            return new RegexValidationResult(solutionEntity.Entity,
+                                             failingAttributes,
+                                             this);
         }
 
     }

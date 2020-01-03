@@ -5,6 +5,8 @@ using System.Linq;
 
 namespace CdsCustomizationValidator.Domain
 {
+
+    // TODO This class could be combined to its base class?
     /// <summary>
     /// Validation results for attributes of a specific entity.
     /// </summary>

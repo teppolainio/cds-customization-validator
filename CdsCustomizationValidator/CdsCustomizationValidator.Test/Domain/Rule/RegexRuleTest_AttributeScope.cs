@@ -1,6 +1,7 @@
 ﻿using CdsCustomizationValidator.Domain;
 using CdsCustomizationValidator.Domain.Rule;
 using FakeXrmEasy.Extensions;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Metadata;
 using System.Collections.Generic;
 using Xunit;
@@ -70,7 +71,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             Assert.True(results.Passed);
         }
 
-        [Fact(DisplayName = "RegexRule: Check musts succeedd for ustom unmanaged fields matching the pattern.")]
+        [Fact(DisplayName = "RegexRule: Check must succeed for custom unmanaged fields matching the pattern.")]
         public void CustomAttributesMatchingPatternMustSucceedTest()
         {
             EntityMetadata entity = new EntityMetadata()
@@ -154,6 +155,9 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             EntityMetadata entity = new EntityMetadata()
             {
                 SchemaName = "Account",
+                DisplayName = new Label() {
+                    UserLocalizedLabel = new LocalizedLabel("Asiakas", 1035)
+                }
             };
             entity.SetSealedPropertyValue("IsManaged", true);
             entity.SetSealedPropertyValue("IsCustomEntity", false);
@@ -239,7 +243,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var results = ruleToTest.Validate(validSolutionEntity);
 
-            Assert.False(results.Passed);
+            Assert.True(results.Passed);
         }
 
     }
