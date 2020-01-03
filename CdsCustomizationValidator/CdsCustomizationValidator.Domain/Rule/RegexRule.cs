@@ -34,7 +34,7 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </summary>
         public override string Description
         {
-            get { return $"Schema name of an {_scope} must match to regular expression pattern {Pattern}."; }
+            get { return $"Schema name of an {Scope} must match to regular expression pattern {Pattern}."; }
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace CdsCustomizationValidator.Domain.Rule
                     ex);
             }
 
-            _scope = scope;
+            Scope = scope;
 
             _excludedSchemaNames = excludedSchemaNames;
         }
@@ -99,7 +99,7 @@ namespace CdsCustomizationValidator.Domain.Rule
         {
 
             bool validationPassed = false;
-            switch (_scope)
+            switch (Scope)
             {
                 case RuleScope.Entity:
                     validationPassed = ValidateEntityScope(solutionEntity);
@@ -109,7 +109,7 @@ namespace CdsCustomizationValidator.Domain.Rule
                     break;
                 default:
                     throw new NotImplementedException(
-                        $"Implementation is missing for scope {_scope}.");
+                        $"Implementation is missing for scope {Scope}.");
             }     
 
             var retval = new RegexValidationResult(solutionEntity.Entity,
@@ -119,9 +119,16 @@ namespace CdsCustomizationValidator.Domain.Rule
             return retval as ValidationResult;
         }
 
+        /// <summary>
+        /// Regular expression pattern being applied to rule scope.
+        /// </summary>
         internal Regex Pattern { get; }
 
-        private readonly RuleScope _scope;
+        /// <summary>
+        /// Scope of the rule.
+        /// </summary>
+        internal RuleScope Scope { get; }
+
         private readonly ICollection<string> _excludedSchemaNames;
 
         private bool ValidateEntityScope(SolutionEntity solutionEntity)
