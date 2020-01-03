@@ -1,4 +1,5 @@
-﻿using Microsoft.Xrm.Sdk.Metadata;
+﻿using CdsCustomizationValidator.Domain.Rule;
+using Microsoft.Xrm.Sdk.Metadata;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +31,7 @@ namespace CdsCustomizationValidator.Domain
         public AttributeValidationResult(
             EntityMetadata entity,
             IEnumerable<AttributeMetadata> failingAttributes,
-            Rule.CustomizationRuleBase validatedRule)
+            AttributePrefixRule validatedRule)
             : base(entity, !failingAttributes.Any(), validatedRule)
         {
             FailingAttributes = failingAttributes;
