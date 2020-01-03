@@ -216,6 +216,39 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
                             results.FormatValidationResult());
         }
 
+        [Fact(DisplayName = "RegexRule: Entity with incorrectly created schema name can be excluded from validation.")]
+        public void ExcludeEntityFromCheck() {
+            EntityMetadata entity = new EntityMetadata()
+            {
+                SchemaName = "foobar_myNotSoMagnificientEntity",
+            };
+            entity.SetSealedPropertyValue("IsManaged", false);
+            entity.SetSealedPropertyValue("IsCustomEntity", true);
+
+            List<AttributeMetadata> attributes = null;
+
+            var isOwnedBySolution = true;
+
+            var validSolutionEntity = new SolutionEntity(entity,
+                                                         attributes,
+                                                         isOwnedBySolution);
+
+            var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+            var scope = RuleScope.Entity;
+            var excludedEntities = new List<string> {
+                "foobar_123",
+                "foobar_myNotSoMagnificientEntity",
+                "foobar_mySecondNotSoGreatAgainEntity"
+            };
+
+            var ruleToTest = new RegexRule(regexPattern, scope,
+                                           excludedEntities);
+
+            var results = ruleToTest.Validate(validSolutionEntity);
+
+            Assert.True(results.Passed);
+        }
+
     }
 
 }

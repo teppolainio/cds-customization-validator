@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace CdsCustomizationValidator.Domain.Rule
@@ -39,7 +40,33 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// Scope of the rule.
         /// </param>
         public RegexRule(string regexPattern, RuleScope scope)
+            : this(regexPattern, scope, new List<string>())
+        {   
+        }
+
+        /// <summary>
+        /// Creates a new rule instance requiring naming to match given
+        /// pattern on certain scope.
+        /// </summary>
+        /// <param name="regexPattern">
+        /// Regular expression pattern which must be met on scope given by
+        /// parameter <paramref name="scope"/>.
+        /// </param>
+        /// <param name="scope">
+        /// Scope of the rule.
+        /// </param>
+        /// <param name="excludedSchemaNames">
+        /// List of schema names which are exluded from the rule.
+        /// </param>
+        public RegexRule(string regexPattern,
+                         RuleScope scope,
+                         ICollection<string> excludedSchemaNames)
         {
+            if (excludedSchemaNames == null)
+            {
+                throw new ArgumentNullException(nameof(excludedSchemaNames));
+            }
+
             try
             {
                 Pattern = new Regex(regexPattern);
@@ -51,6 +78,8 @@ namespace CdsCustomizationValidator.Domain.Rule
             }
 
             _scope = scope;
+
+            _excludedSchemaNames = excludedSchemaNames;
         }
 
         /// <summary>
@@ -60,16 +89,18 @@ namespace CdsCustomizationValidator.Domain.Rule
             SolutionEntity solutionEntity)
         {
 
+            var entity = solutionEntity.Entity;
+
             bool validationPassed = false;
             if (solutionEntity.IsOwnedBySolution == false ||
-                solutionEntity.Entity.IsManaged == true)
+                entity.IsManaged == true ||
+                _excludedSchemaNames.Contains(entity.SchemaName))
             {
                 validationPassed = true;
             }
             else
             {
-                validationPassed = Pattern.IsMatch(solutionEntity.Entity
-                                                                 .SchemaName);
+                validationPassed = Pattern.IsMatch(entity.SchemaName);
             }       
 
             var retval = new RegexValidationResult(solutionEntity.Entity,
@@ -82,6 +113,6 @@ namespace CdsCustomizationValidator.Domain.Rule
         internal Regex Pattern { get; }
 
         private readonly RuleScope _scope;
-
+        private readonly ICollection<string> _excludedSchemaNames;
     }
 }
