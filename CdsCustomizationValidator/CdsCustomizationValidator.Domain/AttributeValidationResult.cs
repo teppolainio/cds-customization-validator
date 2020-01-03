@@ -12,11 +12,6 @@ namespace CdsCustomizationValidator.Domain
     {
 
         /// <summary>
-        /// Attributes which have failed the rule validation.
-        /// </summary>
-        public IEnumerable<AttributeMetadata> FailingAttributes { get; }
-
-        /// <summary>
         /// Initializes validation result.
         /// </summary>
         /// <param name="entity">
@@ -34,7 +29,7 @@ namespace CdsCustomizationValidator.Domain
             AttributePrefixRule validatedRule)
             : base(entity, !failingAttributes.Any(), validatedRule)
         {
-            FailingAttributes = failingAttributes;
+            _failingAttributes = failingAttributes;
         }
 
         /// <summary>
@@ -45,10 +40,10 @@ namespace CdsCustomizationValidator.Domain
         {
             var resultStr = base.FormatValidationResult();
 
-            if (FailingAttributes.Any())
+            if (_failingAttributes.Any())
             {
                 resultStr += " Failures on attributes";
-                foreach (var attr in FailingAttributes)
+                foreach (var attr in _failingAttributes)
                 {
                     resultStr += $" {attr.SchemaName},";
                 }
@@ -58,6 +53,11 @@ namespace CdsCustomizationValidator.Domain
 
             return resultStr;
         }
+
+        /// <summary>
+        /// Attributes which have failed the rule validation.
+        /// </summary>
+        private readonly IEnumerable<AttributeMetadata> _failingAttributes;
 
 
     }
