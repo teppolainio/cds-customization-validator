@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xrm.Sdk.Metadata;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace CdsCustomizationValidator.Domain.Rule
@@ -104,8 +105,8 @@ namespace CdsCustomizationValidator.Domain.Rule
                     validationPassed = ValidateEntityScope(solutionEntity);
                     break;
                 case RuleScope.Attribute:
-                    throw new NotImplementedException();
-                    //break;
+                    validationPassed = ValidateAttributeScope(solutionEntity);
+                    break;
                 default:
                     throw new NotImplementedException(
                         $"Implementation is missing for scope {_scope}.");
@@ -142,5 +143,28 @@ namespace CdsCustomizationValidator.Domain.Rule
 
             return validationPassed;
         }
+
+        private bool ValidateAttributeScope(SolutionEntity solutionEntity)
+        {
+            var attributesToCheck = solutionEntity.Attributes
+                                                  .Where(a => a.IsManaged != true &&
+                                                              a.IsCustomAttribute == true);
+
+
+            var validationPassed = true;
+
+            foreach (var attribute in attributesToCheck)
+            {
+                var pass = Pattern.IsMatch(attribute.SchemaName);
+
+                if (!pass) {
+                    validationPassed = false;
+                    break;
+                }
+            }
+
+            return validationPassed;
+        }
+
     }
 }
