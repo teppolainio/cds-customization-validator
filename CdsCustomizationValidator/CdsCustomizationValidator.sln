@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdsCustomizationValidator.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdsCustomizationValidator.Domain", "CdsCustomizationValidator.Domain\CdsCustomizationValidator.Domain.csproj", "{D4952D03-2866-4CB5-8582-032C3C3361FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CdsCustomizationValidator.Test", "CdsCustomizationValidator.Test\CdsCustomizationValidator.Test.csproj", "{38E1F116-DFAE-47C5-9E6E-BF2F680378C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D4952D03-2866-4CB5-8582-032C3C3361FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4952D03-2866-4CB5-8582-032C3C3361FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4952D03-2866-4CB5-8582-032C3C3361FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38E1F116-DFAE-47C5-9E6E-BF2F680378C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38E1F116-DFAE-47C5-9E6E-BF2F680378C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38E1F116-DFAE-47C5-9E6E-BF2F680378C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38E1F116-DFAE-47C5-9E6E-BF2F680378C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
