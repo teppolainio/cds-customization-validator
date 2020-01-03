@@ -34,7 +34,7 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </summary>
         public override string Description
         {
-            get { return $"Schema name of an {Scope} must match to regular expression pattern {Pattern}."; }
+            get { return $"Schema name of an {Scope} must match to regular expression pattern {Pattern}"; }
         }
 
         /// <summary>
@@ -161,7 +161,9 @@ namespace CdsCustomizationValidator.Domain.Rule
 
             foreach (var attribute in attributesToCheck)
             {
-                if (_excludedSchemaNames.Contains(attribute.SchemaName))
+
+                var attrFullname = $"{solutionEntity.Entity.SchemaName}.{attribute.SchemaName}";
+                if (_excludedSchemaNames.Contains(attrFullname))
                 {
                     continue;
                 }

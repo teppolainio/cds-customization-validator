@@ -24,7 +24,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var ruleToTest = new RegexRule(regexPattern, scope);
 
-            Assert.Equal($"Schema name of an Entity must match to regular expression pattern {regexPattern}.",
+            Assert.Equal($"Schema name of an Entity must match to regular expression pattern {regexPattern}",
                          ruleToTest.Description);
         }
 
@@ -196,8 +196,8 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var results = ruleToTest.Validate(validSolutionEntity);
 
-            Assert.Contains($"Entity schema name {entity.SchemaName} doesn't match given pattern \"{regexPattern}\".",
-                            results.FormatValidationResult());
+            Assert.Equal($"Rule: {ruleToTest.Description} failed. Entity schema name {entity.SchemaName} doesn't match given pattern \"{regexPattern}\".",
+                         results.FormatValidationResult());
         }
 
         [Fact(DisplayName = "RegexRule: Entity with incorrectly created schema name can be excluded from validation.")]

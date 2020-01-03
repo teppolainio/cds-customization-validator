@@ -23,7 +23,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var ruleToTest = new RegexRule(regexPattern, scope);
 
-            Assert.Equal($"Schema name of an Attribute must match to regular expression pattern {regexPattern}.",
+            Assert.Equal($"Schema name of an Attribute must match to regular expression pattern {regexPattern}",
                          ruleToTest.Description);
         }
 
@@ -193,8 +193,10 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var results = ruleToTest.Validate(validSolutionEntity);
 
-            Assert.Contains($"Following attributes do not match given pattern \"{regexPattern}\": foo_customField, foo_c.",
-                            results.FormatValidationResult());
+            Assert.Equal($"Rule: {ruleToTest.Description} failed. " +
+                         "Following attributes do not match given pattern: " +
+                         "foo_customField, foo_c.",
+                         results.FormatValidationResult());
         }
 
         [Fact(DisplayName = "RegexRule: Custom fields with incorrect names can be excluded from validation.")]
@@ -234,8 +236,8 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
             var scope = RuleScope.Attribute;
             var excludedAttributes = new List<string> {
-                "foo_customField",
-                "foo_c"
+                "Account.foo_customField",
+                "Account.foo_c"
             };
 
             var ruleToTest = new RegexRule(regexPattern, scope,

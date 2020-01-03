@@ -78,27 +78,27 @@ namespace CdsCustomizationValidator.Domain
                     "given list of failing attributes.");
             }
 
-            var resultStr = base.FormatValidationResult();
-
             if (Passed) {
-                return resultStr;
+                return base.FormatValidationResult();
             }
+
+            string resultStr = $"Rule: {ValidatedRule.Description} failed. ";
 
             if (rule.Scope == RuleScope.Entity)
             {
 
-                resultStr += $" Entity schema name {Entity.SchemaName} " +
+                resultStr += $"Entity schema name {Entity.SchemaName} " +
                             $"doesn't match given pattern \"{ rule.Pattern }\".";
             }
             else if (rule.Scope == RuleScope.Attribute) {
 
-                resultStr += $"Following attributes do not match given pattern \"{rule.Pattern}\":";
+                resultStr += $"Following attributes do not match given pattern:";
 
                 foreach (var attr in _failingAttributes)
                 {
                     resultStr += $" {attr.SchemaName},";
                 }
-                resultStr += $"{resultStr.TrimEnd(',')}.";
+                resultStr = $"{resultStr.TrimEnd(',')}.";
             }
             else
             {
