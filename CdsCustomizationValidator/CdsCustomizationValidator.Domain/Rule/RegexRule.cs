@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace CdsCustomizationValidator.Domain.Rule
 {
 
 
+    /// <summary>
+    /// Scope of the rule.
+    /// </summary>
     public enum RuleScope { 
         Entity
     };
@@ -54,8 +53,19 @@ namespace CdsCustomizationValidator.Domain.Rule
             _scope = scope;
         }
 
+        /// <summary>
+        /// See <see cref="CustomizationRuleBase.ValidateRule(SolutionEntity)"/>.
+        /// </summary>
         protected override ValidationResult ValidateRule(SolutionEntity solutionEntity)
         {
+            if (solutionEntity.IsOwnedBySolution == false ||
+                solutionEntity.Entity.IsManaged == true)
+            {
+                return new ValidationResult(solutionEntity.Entity,
+                                            true,
+                                            this);
+            }
+
             throw new NotImplementedException();
         }
 
