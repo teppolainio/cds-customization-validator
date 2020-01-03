@@ -6,6 +6,7 @@ using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DAO = CdsCustomizationValidator.Infrastructure.DAO;
 
 namespace CdsCustomizationValidator.Domain
 {
@@ -23,15 +24,19 @@ namespace CdsCustomizationValidator.Domain
 
             Console.WriteLine($"Handling solution {uniqueSolutionName}.");
 
-            QueryExpression entityComponentsQuery = new QueryExpression
+            var entityComponentsQuery = new QueryExpression
             {
-                EntityName = "solutioncomponent",
+                EntityName = DAO.SolutionComponent.EntityLogicalName,
                 ColumnSet = new ColumnSet(true),
                 Criteria = new FilterExpression(),
             };
-            LinkEntity solutionLink = new LinkEntity("solutioncomponent", "solution", "solutionid", "solutionid", JoinOperator.Inner);
+            var solutionLink = new LinkEntity(DAO.SolutionComponent.EntityLogicalName,
+                                              DAO.Solution.EntityLogicalName,
+                                              "solutionid",
+                                              "solutionid",
+                                              JoinOperator.Inner);
             solutionLink.LinkCriteria = new FilterExpression();
-            var condition = new ConditionExpression("uniquename", ConditionOperator.In, uniqueSolutionName);
+            var condition = new ConditionExpression("uniquename",ConditionOperator.In, uniqueSolutionName);
             solutionLink.LinkCriteria.AddCondition(condition);
             entityComponentsQuery.LinkEntities.Add(solutionLink);
             entityComponentsQuery.Criteria.AddCondition(new ConditionExpression("componenttype", ConditionOperator.Equal, 1));
@@ -57,16 +62,16 @@ namespace CdsCustomizationValidator.Domain
             // https://docs.microsoft.com/en-us/dynamics365/customerengagement/on-premises/developer/entities/solutioncomponent#BKMK_RootComponentBehavior
             //if entityComponentCollection.RootComponentBehavior  == 0 niin pitää ottaa entiteetin kaikki attribuutit
 
-            var bar = entityComponentCollection.Entities
-                                               .Where(e => e.GetAttributeValue<OptionSetValue>("rootcomponentbehavior").Value == 0)
-                                               .ToList();
+            var ownedEntities = entityComponentCollection.Entities
+                                                         .Where(e => e.GetAttributeValue<OptionSetValue>("rootcomponentbehavior").Value == 0)
+                                                         .ToList();
 
             foreach (var entity in entitiesInSolution)
             {
 
                 Console.WriteLine($"Handling entity {entity.LogicalName}.");
 
-                if (bar.All(e => e.GetAttributeValue<Guid?>("objectid") != entity.MetadataId))
+                if (ownedEntities.All(e => e.GetAttributeValue<Guid?>("objectid") != entity.MetadataId))
                 {
                     var attributeMetadata = GetAttributesInSolution(entity, uniqueSolutionName);
 
@@ -78,7 +83,7 @@ namespace CdsCustomizationValidator.Domain
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Entity {entity.LogicalName} has rootcomponentbehavior value {bar.Single(e => e.GetAttributeValue<Guid?>("objectid") == entity.MetadataId).GetAttributeValue<OptionSetValue>("rootcomponentbehavior").Value} meaning solution owns this entity. All fields are included in solution.");
+                    Console.WriteLine($"Entity {entity.LogicalName} has rootcomponentbehavior value {ownedEntities.Single(e => e.GetAttributeValue<Guid?>("objectid") == entity.MetadataId).GetAttributeValue<OptionSetValue>("rootcomponentbehavior").Value} meaning solution owns this entity. All fields are included in solution.");
                     Console.ResetColor();
 
                     var attributes = getEntityMetadata(entity.LogicalName, service, EntityFilters.Attributes);

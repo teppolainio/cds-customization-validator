@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeValidationResult.cs" />
+    <Compile Include="Infrastructure\DAO\DAOEntities.cs" />
+    <Compile Include="Infrastructure\DAO\OptionSets.cs" />
     <Compile Include="Rule\AllowSolutionToOwnManagedEntitiesRule.cs" />
     <Compile Include="Rule\AttributePrefixRule.cs" />
     <Compile Include="Rule\CustomizationRuleBase.cs" />
@@ -68,5 +70,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
