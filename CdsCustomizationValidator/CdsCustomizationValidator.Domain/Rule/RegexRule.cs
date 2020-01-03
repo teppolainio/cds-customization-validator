@@ -32,7 +32,7 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </summary>
         public override string Description
         {
-            get { return $"Schema name of {_scope} must match to regular expression pattern {Pattern}."; }
+            get { return $"Schema name of an {_scope} must match to regular expression pattern {Pattern}."; }
         }
 
         /// <summary>

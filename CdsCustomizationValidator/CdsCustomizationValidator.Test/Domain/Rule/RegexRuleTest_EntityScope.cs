@@ -16,7 +16,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
     public class RegexRuleTests
     {
 
-        [Fact(DisplayName = "RegexRule: Rule description must show entiy scope and pattern.")]
+        [Fact(DisplayName = "RegexRule: Rule description must show entity scope and pattern.")]
         public void RuleDescriptionMustShowScopeAndPatternTest()
         {
             var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
@@ -24,7 +24,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var ruleToTest = new RegexRule(regexPattern, scope);
 
-            Assert.Equal($"Schema name of Entity must match to regular expression pattern {regexPattern}.",
+            Assert.Equal($"Schema name of an Entity must match to regular expression pattern {regexPattern}.",
                          ruleToTest.Description);
         }
 
@@ -167,7 +167,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
             Assert.False(results.Passed);
         }
 
-        [Fact(DisplayName = "RegexRule: Entity first letter is a capital letter check fails.")]
+        [Fact(DisplayName = "RegexRule: Entity first letter is a capital letter check failure description is correct.")]
         public void EntityFirstLetterIsCapitalLetterFailureDescriptionIsCorrectTest()
         {
             EntityMetadata entity = new EntityMetadata()
