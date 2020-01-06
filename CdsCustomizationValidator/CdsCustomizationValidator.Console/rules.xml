@@ -8,5 +8,7 @@
   <DisallowSolutionToOwnManagedEntitiesRule />
 
   <EntityPrefixRule schemaPrefix="sar" />
+
+  <AttributePrefixRule schemaPrefix="sar" />
   
 </CustomizationRule>

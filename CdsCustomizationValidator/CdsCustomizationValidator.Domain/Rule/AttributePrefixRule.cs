@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace CdsCustomizationValidator.Domain.Rule
 {
@@ -25,6 +26,13 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </param>
         public AttributePrefixRule(string schemaPrefix)
         {
+            if (string.IsNullOrWhiteSpace(schemaPrefix))
+            {
+                throw new ArgumentException(
+                   "Schema prefix isn't allowed to be null, empty or whitespace.",
+                   nameof(schemaPrefix));
+            }
+
             _schemaPrefix = schemaPrefix.TrimEnd('_');
         }
 

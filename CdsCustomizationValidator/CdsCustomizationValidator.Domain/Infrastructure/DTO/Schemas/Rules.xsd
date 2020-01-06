@@ -8,17 +8,22 @@
       <xs:attribute name="allow" type="xs:boolean"
                     use="optional" default="false"/>
     </xs:complexType>
-  
-    <xs:element name="AttributePrefixRule" nillable="true" type="AttributePrefixRule" />
+
+  <xs:complexType name="PrefixRule" abstract="true">
+    <xs:attribute name ="schemaPrefix" type="xs:string"
+                    use="required"/>
+  </xs:complexType>
+
     <xs:complexType name="AttributePrefixRule">
-      <xs:sequence>
-        <xs:element name ="SchemaPrefix" type="xs:string" />
-      </xs:sequence>
+      <xs:complexContent>
+        <xs:extension base="PrefixRule" />
+      </xs:complexContent>
     </xs:complexType>
 
     <xs:complexType name="EntityPrefixRule">
-      <xs:attribute name ="schemaPrefix" type="xs:string"
-                    use="required"/>
+      <xs:complexContent>
+        <xs:extension base="PrefixRule" />
+      </xs:complexContent>
     </xs:complexType>
 
     <xs:simpleType name="RuleScope">
@@ -46,6 +51,11 @@
       <xs:element name="EntityPrefixRule" 
                   minOccurs="0" maxOccurs="1"
                   type="EntityPrefixRule" />
+
+      <xs:element name="AttributePrefixRule" 
+                  minOccurs="0" maxOccurs="1"
+                  type="AttributePrefixRule" />
+      
     </xs:all>
   </xs:complexType>
   

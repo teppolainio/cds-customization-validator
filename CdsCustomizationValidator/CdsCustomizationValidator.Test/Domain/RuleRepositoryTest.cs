@@ -121,6 +121,50 @@ namespace CdsCustomizationValidator.Test.Domain
             Assert.Equal("schemaPrefix", ex.ParamName);
         }
 
+        [Fact(DisplayName = "RuleRepository: DTO.AttributePrefixRule value set to \"sar\".")]
+        public void DtoAttributePrefixRuleSet()
+        {
+            var dtoRules = new DTO.CustomizationRule()
+            {
+                AttributePrefixRule = new DTO.AttributePrefixRule()
+                {
+                    schemaPrefix = "sar"
+                }
+            };
+
+            var rules = RuleRepository.GetRules(dtoRules);
+
+            var rule = rules.Single() as AttributePrefixRule;
+
+            string prefix = GetInstanceField(rule.GetType(),
+                                             rule,
+                                             "_schemaPrefix") as string;
+
+            Assert.Equal("sar", prefix);
+        }
+
+        [Theory(DisplayName = "RuleRepository: DTO.AttributePrefixRule with illegal values.")]
+        [InlineData("")]
+        [InlineData("   ")]
+        [InlineData(null)]
+        public void DtoAttributePrefixRuleIllegalValues(string prefix)
+        {
+            var dtoRules = new DTO.CustomizationRule()
+            {
+                AttributePrefixRule = new DTO.AttributePrefixRule()
+                {
+                    schemaPrefix = prefix
+                }
+            };
+
+            var ex = Assert.Throws<ArgumentException>(
+                () => RuleRepository.GetRules(dtoRules));
+
+            Assert.StartsWith("Schema prefix isn't allowed to be null, empty or whitespace.",
+                              ex.Message);
+            Assert.Equal("schemaPrefix", ex.ParamName);
+        }
+
         /// <summary>
         /// Uses reflection to get the field value from an object.
         /// </summary>

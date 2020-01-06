@@ -75,6 +75,11 @@ namespace CdsCustomizationValidator.Domain
                 var rule = ruleFactory.CreateFrom(rules.EntityPrefixRule);
                 retval.Add(rule);
             }
+            if (rules.AttributePrefixRule != null)
+            {
+                var rule = ruleFactory.CreateFrom(rules.AttributePrefixRule);
+                retval.Add(rule);
+            }
 
             return retval;
         }

@@ -21,74 +21,6 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class AttributePrefixRule {
-        
-        private string schemaPrefixField;
-        
-        /// <remarks/>
-        public string SchemaPrefix {
-            get {
-                return this.schemaPrefixField;
-            }
-            set {
-                this.schemaPrefixField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class EntityPrefixRule {
-        
-        private string schemaPrefixField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        public string schemaPrefix {
-            get {
-                return this.schemaPrefixField;
-            }
-            set {
-                this.schemaPrefixField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class DisallowSolutionToOwnManagedEntitiesRule {
-        
-        private bool allowField;
-        
-        public DisallowSolutionToOwnManagedEntitiesRule() {
-            this.allowField = false;
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool allow {
-            get {
-                return this.allowField;
-            }
-            set {
-                this.allowField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
     public partial class RegexRule {
         
         private string patternField;
@@ -129,6 +61,71 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     }
     
     /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(EntityPrefixRule))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(AttributePrefixRule))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public abstract partial class PrefixRule {
+        
+        private string schemaPrefixField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string schemaPrefix {
+            get {
+                return this.schemaPrefixField;
+            }
+            set {
+                this.schemaPrefixField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class EntityPrefixRule : PrefixRule {
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class AttributePrefixRule : PrefixRule {
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DisallowSolutionToOwnManagedEntitiesRule {
+        
+        private bool allowField;
+        
+        public DisallowSolutionToOwnManagedEntitiesRule() {
+            this.allowField = false;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool allow {
+            get {
+                return this.allowField;
+            }
+            set {
+                this.allowField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -139,6 +136,8 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
         private DisallowSolutionToOwnManagedEntitiesRule disallowSolutionToOwnManagedEntitiesRuleField;
         
         private EntityPrefixRule entityPrefixRuleField;
+        
+        private AttributePrefixRule attributePrefixRuleField;
         
         /// <remarks/>
         public DisallowSolutionToOwnManagedEntitiesRule DisallowSolutionToOwnManagedEntitiesRule {
@@ -157,6 +156,16 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
             }
             set {
                 this.entityPrefixRuleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public AttributePrefixRule AttributePrefixRule {
+            get {
+                return this.attributePrefixRuleField;
+            }
+            set {
+                this.attributePrefixRuleField = value;
             }
         }
     }

@@ -52,5 +52,26 @@ namespace CdsCustomizationValidator.Domain
             var prefix = entityPrefixRule.schemaPrefix;
             return new EntityPrefixRule(prefix);
         }
+
+        /// <summary>
+        /// Creates a new rule from deserialized rule representation.
+        /// </summary>
+        /// <param name="deserializedRule">
+        /// Deserialized rule.
+        /// </param>
+        /// <returns>
+        /// The rule from <paramref name="deserializedRule"/>.
+        /// </returns>
+        internal AttributePrefixRule CreateFrom(
+            DTO.AttributePrefixRule deserializedRule)
+        {
+            if (deserializedRule is null)
+            {
+                throw new ArgumentNullException(nameof(deserializedRule));
+            }
+
+            var prefix = deserializedRule.schemaPrefix;
+            return new Rule.AttributePrefixRule(prefix);
+        }
     }
 }
