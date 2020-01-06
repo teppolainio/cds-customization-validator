@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\RuleRepositoryTest.cs" />
     <Compile Include="Domain\Rule\EntityPrefixRuleTest.cs" />
     <Compile Include="Domain\Rule\RegexRuleTest.cs" />
     <Compile Include="Domain\Rule\RegexRuleTest_AttributeScope.cs" />
