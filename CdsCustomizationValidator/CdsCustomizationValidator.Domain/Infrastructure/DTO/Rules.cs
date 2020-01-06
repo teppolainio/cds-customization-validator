@@ -21,31 +21,6 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class AllowSolutionToOwnManagedEntitiesRule {
-        
-        private bool solutionCanOwnManagedEntitiesField;
-        
-        public AllowSolutionToOwnManagedEntitiesRule() {
-            this.solutionCanOwnManagedEntitiesField = false;
-        }
-        
-        /// <remarks/>
-        public bool SolutionCanOwnManagedEntities {
-            get {
-                return this.solutionCanOwnManagedEntitiesField;
-            }
-            set {
-                this.solutionCanOwnManagedEntitiesField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
     public partial class AttributePrefixRule {
         
         private string schemaPrefixField;
@@ -57,6 +32,32 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
             }
             set {
                 this.schemaPrefixField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DisallowSolutionToOwnManagedEntitiesRule {
+        
+        private bool allowField;
+        
+        public DisallowSolutionToOwnManagedEntitiesRule() {
+            this.allowField = false;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool allow {
+            get {
+                return this.allowField;
+            }
+            set {
+                this.allowField = value;
             }
         }
     }
@@ -125,5 +126,26 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
         
         /// <remarks/>
         Attribute,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class CustomizationRule {
+        
+        private DisallowSolutionToOwnManagedEntitiesRule disallowSolutionToOwnManagedEntitiesRuleField;
+        
+        /// <remarks/>
+        public DisallowSolutionToOwnManagedEntitiesRule DisallowSolutionToOwnManagedEntitiesRule {
+            get {
+                return this.disallowSolutionToOwnManagedEntitiesRuleField;
+            }
+            set {
+                this.disallowSolutionToOwnManagedEntitiesRuleField = value;
+            }
+        }
     }
 }

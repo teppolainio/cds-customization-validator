@@ -4,11 +4,9 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 
-    <xs:complexType name="AllowSolutionToOwnManagedEntitiesRule">
-      <xs:sequence>
-        <xs:element name="SolutionCanOwnManagedEntities" type="xs:boolean"
-                    nillable="false" default="false"/>
-      </xs:sequence>
+    <xs:complexType name="DisallowSolutionToOwnManagedEntitiesRule">
+      <xs:attribute name="allow" type="xs:boolean"
+                    use="optional" default="false"/>
     </xs:complexType>
   
     <xs:element name="AttributePrefixRule" nillable="true" type="AttributePrefixRule" />
@@ -42,10 +40,11 @@
 
   <xs:element name="CustomizationRule" nillable="false" type="CustomizationRule" />
   <xs:complexType name="CustomizationRule">
-    <xs:choice>
-      <xs:element name="AllowSolutionToOwnManagedEntitiesRule" nillable="true"
-                  type="AllowSolutionToOwnManagedEntitiesRule" />
-    </xs:choice>
+    <xs:all>
+      <xs:element name="DisallowSolutionToOwnManagedEntitiesRule"
+                  minOccurs="0" maxOccurs="1"
+                  type="DisallowSolutionToOwnManagedEntitiesRule" />
+    </xs:all>
   </xs:complexType>
   
 </xs:schema>

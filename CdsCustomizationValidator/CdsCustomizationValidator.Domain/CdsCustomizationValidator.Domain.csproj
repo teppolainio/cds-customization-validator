@@ -60,8 +60,9 @@
     <Compile Include="Infrastructure\DAO\OptionSets.cs" />
     <Compile Include="Infrastructure\DTO\Rules.cs" />
     <Compile Include="RegexValidationResult.cs" />
+    <Compile Include="RuleFactory.cs" />
     <Compile Include="RuleRepository.cs" />
-    <Compile Include="Rule\AllowSolutionToOwnManagedEntitiesRule.cs" />
+    <Compile Include="Rule\DisallowSolutionToOwnManagedEntitiesRule.cs" />
     <Compile Include="Rule\AttributePrefixRule.cs" />
     <Compile Include="Rule\CustomizationRuleBase.cs" />
     <Compile Include="Rule\EntityPrefixRule.cs" />

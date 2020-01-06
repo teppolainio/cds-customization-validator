@@ -102,7 +102,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="rules.xml" />
+    <Content Include="rules.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

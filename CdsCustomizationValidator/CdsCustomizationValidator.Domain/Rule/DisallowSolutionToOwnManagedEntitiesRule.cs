@@ -4,7 +4,7 @@
     /// Rule to check if entity is managed and owned by solution. This can be
     /// either allowed or disallowed. You probably do not want to allow this.
     /// </summary>
-    public class AllowSolutionToOwnManagedEntitiesRule : CustomizationRuleBase
+    public class DisallowSolutionToOwnManagedEntitiesRule : CustomizationRuleBase
     {
 
         /// <summary>
@@ -21,7 +21,7 @@
         /// If true solution is allowed to own managed entities.
         /// Note! You probably don't want to allow this.
         /// </param>
-        public AllowSolutionToOwnManagedEntitiesRule(
+        public DisallowSolutionToOwnManagedEntitiesRule(
             bool allowSolutionToOwnManagedEntities)
         {
             _allowSolutionToOwnManagedEntities = allowSolutionToOwnManagedEntities;
