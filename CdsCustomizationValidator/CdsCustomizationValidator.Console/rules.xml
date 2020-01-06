@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CustomizationRule
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="..\CdsCustomizationValidator.Domain\Infrastructure\DTO\Schemas\Rules.xsd">
+
+  <AllowSolutionToOwnManagedEntitiesRule>
+    <SolutionCanOwnManagedEntities>false</SolutionCanOwnManagedEntities>
+  </AllowSolutionToOwnManagedEntitiesRule>
+  
+</CustomizationRule>

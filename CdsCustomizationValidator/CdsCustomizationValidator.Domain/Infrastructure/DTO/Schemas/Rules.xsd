@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="EntityPrefixRule"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+    <xs:complexType name="AllowSolutionToOwnManagedEntitiesRule">
+      <xs:sequence>
+        <xs:element name="SolutionCanOwnManagedEntities" type="xs:boolean"
+                    nillable="false" default="false"/>
+      </xs:sequence>
+    </xs:complexType>
+  
+    <xs:element name="AttributePrefixRule" nillable="true" type="AttributePrefixRule" />
+    <xs:complexType name="AttributePrefixRule">
+      <xs:sequence>
+        <xs:element name ="SchemaPrefix" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  
+    <xs:element name="EntityPrefixRule" nillable="true" type="EntityPrefixRule" />
+    <xs:complexType name="EntityPrefixRule">
+      <xs:sequence>
+        <xs:element name ="SchemaPrefix" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="RuleScope">
+      <xs:restriction base="xs:string">
+        <xs:enumeration value="Entity" />
+        <xs:enumeration value="Attribute" />
+      </xs:restriction>
+    </xs:simpleType>
+  
+    <xs:element name="RegexRule" nillable="true" type="RegexRule" />
+    <xs:complexType name="RegexRule">
+      <xs:sequence>
+        <xs:element name="Pattern" type="xs:string" />
+        <xs:element name="Scope" type="RuleScope" />
+      </xs:sequence>
+    </xs:complexType>
+
+  <xs:element name="CustomizationRule" nillable="false" type="CustomizationRule" />
+  <xs:complexType name="CustomizationRule">
+    <xs:choice>
+      <xs:element name="AllowSolutionToOwnManagedEntitiesRule" nillable="true"
+                  type="AllowSolutionToOwnManagedEntitiesRule" />
+    </xs:choice>
+  </xs:complexType>
+  
+</xs:schema>

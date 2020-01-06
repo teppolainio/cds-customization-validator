@@ -14,6 +14,11 @@ namespace CdsCustomizationValidator.App
 
             var solutionName = args[0];
             var connStr = args[1];
+
+            var ruleRepo = new RuleRepository();
+
+            var rulesXml = ruleRepo.GetRules("rules.xml");
+
             using (var service = new CrmServiceClient(connStr))
             {
                 var solutionValidator = new SolutionService(service);

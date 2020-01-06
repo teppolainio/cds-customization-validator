@@ -58,7 +58,9 @@
     <Compile Include="AttributeValidationResult.cs" />
     <Compile Include="Infrastructure\DAO\DAOEntities.cs" />
     <Compile Include="Infrastructure\DAO\OptionSets.cs" />
+    <Compile Include="Infrastructure\DTO\Rules.cs" />
     <Compile Include="RegexValidationResult.cs" />
+    <Compile Include="RuleRepository.cs" />
     <Compile Include="Rule\AllowSolutionToOwnManagedEntitiesRule.cs" />
     <Compile Include="Rule\AttributePrefixRule.cs" />
     <Compile Include="Rule\CustomizationRuleBase.cs" />
@@ -70,6 +72,10 @@
     <Compile Include="ValidationResult.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Infrastructure\DTO\Schemas\Rules.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Infrastructure\DTO\Schemas\GenerateRuleDtos.bat" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
