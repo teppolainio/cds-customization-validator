@@ -106,9 +106,22 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class RegexRule {
         
+        private string[] excludeField;
+        
         private string patternField;
         
         private RuleScope scopeField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute("Exclude")]
+        public string[] Exclude {
+            get {
+                return this.excludeField;
+            }
+            set {
+                this.excludeField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlAttributeAttribute()]

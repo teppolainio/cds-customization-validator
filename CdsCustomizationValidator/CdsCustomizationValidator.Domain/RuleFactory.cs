@@ -100,8 +100,16 @@ namespace CdsCustomizationValidator.Domain
                         );
             }
 
+            var exclusions = new string[] { };
+            if (deserializedRule.Exclude != null)
+            {
+                exclusions = deserializedRule.Exclude;
+            
+            }
+
             var rule = new RegexRule(deserializedRule.pattern,
-                                     scope.Value);
+                                     scope.Value,
+                                     exclusions);
             return rule;
         }
     }

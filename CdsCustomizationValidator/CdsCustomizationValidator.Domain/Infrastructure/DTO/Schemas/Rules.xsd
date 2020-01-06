@@ -34,6 +34,11 @@
     </xs:simpleType>
 
     <xs:complexType name="RegexRule">
+      <xs:sequence>
+        <xs:element name="Exclude" type="xs:string"
+                    minOccurs="0" maxOccurs="unbounded"
+                    />
+      </xs:sequence>
       <xs:attribute name="pattern" type="xs:string"
                     use="required"/>
       <xs:attribute name="scope" type="RuleScope"
