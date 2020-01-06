@@ -165,6 +165,52 @@ namespace CdsCustomizationValidator.Test.Domain
             Assert.Equal("schemaPrefix", ex.ParamName);
         }
 
+        [Fact(DisplayName = "RuleRepository: DTO.RegexRule pattern at entity scope.")]
+        public void DtoRegexRulePatternAtEntityScope()
+        {
+            var dtoRules = new DTO.CustomizationRule()
+            {
+                RegexRules= new DTO.RegexRule[]
+                {
+                    new DTO.RegexRule() {
+                        pattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$",
+                        scope = DTO.RuleScope.Entity
+                    }
+                }
+            };
+
+            var rules = RuleRepository.GetRules(dtoRules);
+
+            var rule = rules.Single() as RegexRule;
+
+            Assert.Equal(@"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$",
+                         rule.Pattern.ToString());
+            Assert.Equal(RuleScope.Entity, rule.Scope);
+        }
+
+        [Fact(DisplayName = "RuleRepository: DTO.RegexRule pattern at attribute scope.")]
+        public void DtoRegexRulePatternAtAttributeScope()
+        {
+            var dtoRules = new DTO.CustomizationRule()
+            {
+                RegexRules = new DTO.RegexRule[]
+                {
+                    new DTO.RegexRule() {
+                        pattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$",
+                        scope = DTO.RuleScope.Attribute
+                    }
+                }
+            };
+
+            var rules = RuleRepository.GetRules(dtoRules);
+
+            var rule = rules.Single() as RegexRule;
+
+            Assert.Equal(@"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$",
+                         rule.Pattern.ToString());
+            Assert.Equal(RuleScope.Attribute, rule.Scope);
+        }
+
         /// <summary>
         /// Uses reflection to get the field value from an object.
         /// </summary>

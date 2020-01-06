@@ -80,6 +80,14 @@ namespace CdsCustomizationValidator.Domain
                 var rule = ruleFactory.CreateFrom(rules.AttributePrefixRule);
                 retval.Add(rule);
             }
+            if (rules.RegexRules != null)
+            {
+                foreach (var dtoRule in rules.RegexRules)
+                {
+                    var rule = ruleFactory.CreateFrom(dtoRule);
+                    retval.Add(rule);
+                }
+            }
 
             return retval;
         }

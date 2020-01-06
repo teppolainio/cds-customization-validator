@@ -10,5 +10,12 @@
   <EntityPrefixRule schemaPrefix="sar" />
 
   <AttributePrefixRule schemaPrefix="sar" />
+
+  <RegexRules>
+    <Rule pattern="^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$"
+          scope="Entity" />
+    <Rule pattern="^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$"
+          scope="Attribute" />
+  </RegexRules>
   
 </CustomizationRule>

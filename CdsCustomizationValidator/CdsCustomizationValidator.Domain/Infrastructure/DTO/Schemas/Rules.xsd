@@ -32,13 +32,12 @@
         <xs:enumeration value="Attribute" />
       </xs:restriction>
     </xs:simpleType>
-  
-    <xs:element name="RegexRule" nillable="true" type="RegexRule" />
+
     <xs:complexType name="RegexRule">
-      <xs:sequence>
-        <xs:element name="Pattern" type="xs:string" />
-        <xs:element name="Scope" type="RuleScope" />
-      </xs:sequence>
+      <xs:attribute name="pattern" type="xs:string"
+                    use="required"/>
+      <xs:attribute name="scope" type="RuleScope"
+                    use="required"/>
     </xs:complexType>
 
   <xs:element name="CustomizationRule" nillable="false" type="CustomizationRule" />
@@ -55,6 +54,17 @@
       <xs:element name="AttributePrefixRule" 
                   minOccurs="0" maxOccurs="1"
                   type="AttributePrefixRule" />
+
+      <xs:element name="RegexRules"
+                  minOccurs="0" maxOccurs="1">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Rule"
+                        minOccurs="0" maxOccurs="unbounded"
+                        type="RegexRule" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       
     </xs:all>
   </xs:complexType>

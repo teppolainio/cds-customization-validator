@@ -20,7 +20,90 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
+    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
+    public partial class CustomizationRule {
+        
+        private DisallowSolutionToOwnManagedEntitiesRule disallowSolutionToOwnManagedEntitiesRuleField;
+        
+        private EntityPrefixRule entityPrefixRuleField;
+        
+        private AttributePrefixRule attributePrefixRuleField;
+        
+        private RegexRule[] regexRulesField;
+        
+        /// <remarks/>
+        public DisallowSolutionToOwnManagedEntitiesRule DisallowSolutionToOwnManagedEntitiesRule {
+            get {
+                return this.disallowSolutionToOwnManagedEntitiesRuleField;
+            }
+            set {
+                this.disallowSolutionToOwnManagedEntitiesRuleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public EntityPrefixRule EntityPrefixRule {
+            get {
+                return this.entityPrefixRuleField;
+            }
+            set {
+                this.entityPrefixRuleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public AttributePrefixRule AttributePrefixRule {
+            get {
+                return this.attributePrefixRuleField;
+            }
+            set {
+                this.attributePrefixRuleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute("Rule", IsNullable=false)]
+        public RegexRule[] RegexRules {
+            get {
+                return this.regexRulesField;
+            }
+            set {
+                this.regexRulesField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class DisallowSolutionToOwnManagedEntitiesRule {
+        
+        private bool allowField;
+        
+        public DisallowSolutionToOwnManagedEntitiesRule() {
+            this.allowField = false;
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        [System.ComponentModel.DefaultValueAttribute(false)]
+        public bool allow {
+            get {
+                return this.allowField;
+            }
+            set {
+                this.allowField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class RegexRule {
         
         private string patternField;
@@ -28,7 +111,8 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
         private RuleScope scopeField;
         
         /// <remarks/>
-        public string Pattern {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string pattern {
             get {
                 return this.patternField;
             }
@@ -38,7 +122,8 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
         }
         
         /// <remarks/>
-        public RuleScope Scope {
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public RuleScope scope {
             get {
                 return this.scopeField;
             }
@@ -97,76 +182,5 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class AttributePrefixRule : PrefixRule {
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class DisallowSolutionToOwnManagedEntitiesRule {
-        
-        private bool allowField;
-        
-        public DisallowSolutionToOwnManagedEntitiesRule() {
-            this.allowField = false;
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlAttributeAttribute()]
-        [System.ComponentModel.DefaultValueAttribute(false)]
-        public bool allow {
-            get {
-                return this.allowField;
-            }
-            set {
-                this.allowField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-    public partial class CustomizationRule {
-        
-        private DisallowSolutionToOwnManagedEntitiesRule disallowSolutionToOwnManagedEntitiesRuleField;
-        
-        private EntityPrefixRule entityPrefixRuleField;
-        
-        private AttributePrefixRule attributePrefixRuleField;
-        
-        /// <remarks/>
-        public DisallowSolutionToOwnManagedEntitiesRule DisallowSolutionToOwnManagedEntitiesRule {
-            get {
-                return this.disallowSolutionToOwnManagedEntitiesRuleField;
-            }
-            set {
-                this.disallowSolutionToOwnManagedEntitiesRuleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public EntityPrefixRule EntityPrefixRule {
-            get {
-                return this.entityPrefixRuleField;
-            }
-            set {
-                this.entityPrefixRuleField = value;
-            }
-        }
-        
-        /// <remarks/>
-        public AttributePrefixRule AttributePrefixRule {
-            get {
-                return this.attributePrefixRuleField;
-            }
-            set {
-                this.attributePrefixRuleField = value;
-            }
-        }
     }
 }

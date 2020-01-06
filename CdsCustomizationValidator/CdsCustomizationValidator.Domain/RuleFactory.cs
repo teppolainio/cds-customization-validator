@@ -73,5 +73,36 @@ namespace CdsCustomizationValidator.Domain
             var prefix = deserializedRule.schemaPrefix;
             return new Rule.AttributePrefixRule(prefix);
         }
+
+        /// <summary>
+        /// Creates a new rule from deserialized rule representation.
+        /// </summary>
+        /// <param name="deserializedRule">
+        /// Deserialized rule.
+        /// </param>
+        /// <returns>
+        /// The rule from <paramref name="deserializedRule"/>.
+        /// </returns>
+        internal Rule.RegexRule CreateFrom(DTO.RegexRule deserializedRule)
+        {
+            RuleScope? scope = null;
+            switch (deserializedRule.scope)
+            {
+                case DTO.RuleScope.Entity:
+                    scope = RuleScope.Entity;
+                    break;
+                case DTO.RuleScope.Attribute:
+                    scope = RuleScope.Attribute;
+                    break;
+                default:
+                    throw new NotImplementedException(
+                        $"No mapping for DTO rule scope {deserializedRule.scope}."
+                        );
+            }
+
+            var rule = new RegexRule(deserializedRule.pattern,
+                                     scope.Value);
+            return rule;
+        }
     }
 }
