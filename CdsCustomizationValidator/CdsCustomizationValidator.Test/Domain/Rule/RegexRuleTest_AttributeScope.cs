@@ -23,7 +23,22 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var ruleToTest = new RegexRule(regexPattern, scope);
 
-            Assert.Equal($"Schema name of an Attribute must match to regular expression pattern {regexPattern}",
+            Assert.Equal($"Schema name of an Attribute must match to regular expression pattern {regexPattern}.",
+                         ruleToTest.Description);
+        }
+
+        [Fact(DisplayName = "RegexRule: Rule description must show attribute scope and pattern and exlusions.")]
+        public void RuleDescriptionMustShowScopeAndPatternAndExlclusionTest()
+        {
+            var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+            var scope = RuleScope.Attribute;
+            var excluded = new string[] {
+                "new_notConforming.new_FIELd", "new_foo_new_name", "new_BAR.my_fIeld"
+            };
+
+            var ruleToTest = new RegexRule(regexPattern, scope, excluded);
+
+            Assert.Equal($"Schema name of an Attribute must match to regular expression pattern {regexPattern}. Attribute new_notConforming.new_FIELd, new_foo_new_name and new_BAR.my_fIeld are excluded.",
                          ruleToTest.Description);
         }
 

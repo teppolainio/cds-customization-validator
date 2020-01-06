@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace CdsCustomizationValidator.Domain.Rule
@@ -34,7 +35,40 @@ namespace CdsCustomizationValidator.Domain.Rule
         /// </summary>
         public override string Description
         {
-            get { return $"Schema name of an {Scope} must match to regular expression pattern {Pattern}"; }
+            get {
+                var sb = new StringBuilder("Schema name of an ");
+                sb.Append(Scope)
+                  .Append(" must match to regular expression pattern ")
+                  .Append(Pattern)
+                  .Append(".");
+
+                if (_excludedSchemaNames != null &&
+                    _excludedSchemaNames.Any())
+                {
+                    sb.Append(" ")
+                      .Append(Scope)
+                      .Append(" ");
+
+                    for (int i = 0; i < _excludedSchemaNames.Count; i++)
+                    {
+                        if (i > 0)
+                        {
+                            if (i < (_excludedSchemaNames.Count - 1))
+                            {
+                                sb.Append(", ");
+                            }
+                            else {
+                                sb.Append(" and ");
+                            }
+                        }
+                        sb.Append(_excludedSchemaNames.ElementAt(i));
+                    }
+
+                    sb.Append(" are excluded.");
+                }
+
+                return sb.ToString();
+            }
         }
 
         /// <summary>

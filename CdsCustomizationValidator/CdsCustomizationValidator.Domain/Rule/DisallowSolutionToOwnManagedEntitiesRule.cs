@@ -11,7 +11,14 @@
         /// See <see cref="CustomizationRuleBase.Description"/>.
         /// </summary>
         public override string Description {
-            get { return "Allow solution to own managed entities."; }
+            get {
+                var allowance = "Disallow";
+                if (_allowSolutionToOwnManagedEntities)
+                {
+                    allowance = "Allow";
+                }
+                return $"{allowance} solution to own managed entities.";
+            }
         }
 
         /// <summary>

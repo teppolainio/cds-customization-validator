@@ -24,7 +24,22 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var ruleToTest = new RegexRule(regexPattern, scope);
 
-            Assert.Equal($"Schema name of an Entity must match to regular expression pattern {regexPattern}",
+            Assert.Equal($"Schema name of an Entity must match to regular expression pattern {regexPattern}.",
+                         ruleToTest.Description);
+        }
+
+        [Fact(DisplayName = "RegexRule: Rule description must show entity scope and pattern and exlusions.")]
+        public void RuleDescriptionMustShowScopeAndPatternAndExlclusionTest()
+        {
+            var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+            var scope = RuleScope.Entity;
+            var excluded = new string[] { 
+                "new_notConforming", "new_foo", "new_BAR"
+            };
+
+            var ruleToTest = new RegexRule(regexPattern, scope, excluded);
+
+            Assert.Equal($"Schema name of an Entity must match to regular expression pattern {regexPattern}. Entity new_notConforming, new_foo and new_BAR are excluded.",
                          ruleToTest.Description);
         }
 
