@@ -1,8 +1,6 @@
 ﻿using CdsCustomizationValidator.Domain;
-using CdsCustomizationValidator.Domain.Rule;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace CdsCustomizationValidator.App
@@ -14,24 +12,24 @@ namespace CdsCustomizationValidator.App
 
             var solutionName = args[0];
             var connStr = args[1];
+            var rulesFile = args[2];
 
             var ruleRepo = new RuleRepository();
 
-            var rulesXml = ruleRepo.GetRules("rules.xml");
+            Console.WriteLine($"Reading rules from file \"{rulesFile}\".");
+            var rules = ruleRepo.GetRules(rulesFile);
+
+            Console.WriteLine($"Following {rules.Count} rules were found:");
+            for (int rule = 0; rule < rules.Count; rule++)
+            {
+                Console.WriteLine($"  {rule+1}: {rules[rule].Description}");
+            }
 
             using (var service = new CrmServiceClient(connStr))
             {
                 var solutionValidator = new SolutionService(service);
 
                 var solutionEntitities = solutionValidator.GetSolutionEntities(solutionName);
-
-                var rules = new List<CustomizationRuleBase>() {
-                    new DisallowSolutionToOwnManagedEntitiesRule(false),
-                    new EntityPrefixRule("sar"),
-                    new AttributePrefixRule("sar"),
-                    new RegexRule(@"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$",
-                                  RuleScope.Entity)
-                };
 
                 var results = solutionValidator.Validate(solutionEntitities, rules);
 
