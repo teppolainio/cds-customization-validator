@@ -48,6 +48,11 @@ namespace CdsCustomizationValidator.Domain
                 var rule = ruleFactory.CreateFrom(rules.DisallowSolutionToOwnManagedEntitiesRule);
                 retval.Add(rule);
             }
+            if (rules.EntityPrefixRule != null)
+            {
+                var rule = ruleFactory.CreateFrom(rules.EntityPrefixRule);
+                retval.Add(rule);
+            }
 
             return retval;
         }

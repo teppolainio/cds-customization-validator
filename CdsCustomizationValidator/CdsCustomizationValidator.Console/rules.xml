@@ -6,5 +6,7 @@
   xsi:noNamespaceSchemaLocation="..\CdsCustomizationValidator.Domain\Infrastructure\DTO\Schemas\Rules.xsd">
 
   <DisallowSolutionToOwnManagedEntitiesRule />
+
+  <EntityPrefixRule schemaPrefix="sar" />
   
 </CustomizationRule>

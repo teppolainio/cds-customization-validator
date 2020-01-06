@@ -15,12 +15,10 @@
         <xs:element name ="SchemaPrefix" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
-  
-    <xs:element name="EntityPrefixRule" nillable="true" type="EntityPrefixRule" />
+
     <xs:complexType name="EntityPrefixRule">
-      <xs:sequence>
-        <xs:element name ="SchemaPrefix" type="xs:string" />
-      </xs:sequence>
+      <xs:attribute name ="schemaPrefix" type="xs:string"
+                    use="required"/>
     </xs:complexType>
 
     <xs:simpleType name="RuleScope">
@@ -44,6 +42,10 @@
       <xs:element name="DisallowSolutionToOwnManagedEntitiesRule"
                   minOccurs="0" maxOccurs="1"
                   type="DisallowSolutionToOwnManagedEntitiesRule" />
+
+      <xs:element name="EntityPrefixRule" 
+                  minOccurs="0" maxOccurs="1"
+                  type="EntityPrefixRule" />
     </xs:all>
   </xs:complexType>
   

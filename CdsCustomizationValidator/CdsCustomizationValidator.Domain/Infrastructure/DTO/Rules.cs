@@ -41,6 +41,27 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class EntityPrefixRule {
+        
+        private string schemaPrefixField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string schemaPrefix {
+            get {
+                return this.schemaPrefixField;
+            }
+            set {
+                this.schemaPrefixField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DisallowSolutionToOwnManagedEntitiesRule {
         
         private bool allowField;
@@ -58,27 +79,6 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
             }
             set {
                 this.allowField = value;
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=true)]
-    public partial class EntityPrefixRule {
-        
-        private string schemaPrefixField;
-        
-        /// <remarks/>
-        public string SchemaPrefix {
-            get {
-                return this.schemaPrefixField;
-            }
-            set {
-                this.schemaPrefixField = value;
             }
         }
     }
@@ -138,6 +138,8 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
         
         private DisallowSolutionToOwnManagedEntitiesRule disallowSolutionToOwnManagedEntitiesRuleField;
         
+        private EntityPrefixRule entityPrefixRuleField;
+        
         /// <remarks/>
         public DisallowSolutionToOwnManagedEntitiesRule DisallowSolutionToOwnManagedEntitiesRule {
             get {
@@ -145,6 +147,16 @@ namespace CdsCustomizationValidator.Infrastructure.DTO {
             }
             set {
                 this.disallowSolutionToOwnManagedEntitiesRuleField = value;
+            }
+        }
+        
+        /// <remarks/>
+        public EntityPrefixRule EntityPrefixRule {
+            get {
+                return this.entityPrefixRuleField;
+            }
+            set {
+                this.entityPrefixRuleField = value;
             }
         }
     }
