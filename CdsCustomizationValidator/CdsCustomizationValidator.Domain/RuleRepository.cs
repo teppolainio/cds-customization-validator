@@ -24,7 +24,8 @@ namespace CdsCustomizationValidator.Domain
         /// <returns>
         /// List of rules from <paramref name="rulesFileLocation"/>.
         /// </returns>
-        public List<CustomizationRuleBase> GetRules(string rulesFileLocation) {
+        public List<CustomizationRuleBase> GetRules(string rulesFileLocation)
+        {
 
             var serializer = new XmlSerializer(typeof(DTO.CustomizationRule));
 
@@ -37,6 +38,27 @@ namespace CdsCustomizationValidator.Domain
                                                FileAccess.Read))
             {
                 rules = serializer.Deserialize(stream) as DTO.CustomizationRule;
+            }
+
+            return GetRules(rules);
+        }
+
+        /// <summary>
+        /// Get rules from deserialized rules object.
+        /// This is internal so we can get unit tests to run nicely.
+        /// </summary>
+        /// <param name="rules">
+        /// Deserialized rules object.
+        /// </param>
+        /// <returns>
+        /// List of rules from <paramref name="rules"/>.
+        /// </returns>
+        internal static List<CustomizationRuleBase> GetRules(
+            DTO.CustomizationRule rules)
+        {
+            if (rules is null)
+            {
+                throw new ArgumentNullException(nameof(rules));
             }
 
             var retval = new List<CustomizationRuleBase>();
@@ -56,7 +78,6 @@ namespace CdsCustomizationValidator.Domain
 
             return retval;
         }
-
     }
 
 }
