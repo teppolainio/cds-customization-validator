@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<CustomizationRule
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="..\CdsCustomizationValidator.Domain\Infrastructure\DTO\Schemas\Rules.xsd">
+
+  <DisallowSolutionToOwnManagedEntitiesRule />
+
+  <EntityPrefixRule schemaPrefix="sar" />
+
+  <AttributePrefixRule schemaPrefix="sar" />
+
+  <RegexRules>
+    <Rule pattern="^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$"
+          scope="Entity">
+      <Exclude>new_inCorrectName</Exclude>
+      <Exclude>foo_inCorrectName</Exclude>
+    </Rule>
+    <Rule pattern="^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$"
+          scope="Attribute">
+      <Exclude>new_inCorrectName.new_name</Exclude>
+    </Rule>
+  </RegexRules>
+  
+</CustomizationRule>
