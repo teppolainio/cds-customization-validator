@@ -211,7 +211,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var results = ruleToTest.Validate(validSolutionEntity);
 
-            Assert.Equal($"Rule: {ruleToTest.Description} failed. Entity schema name {entity.SchemaName} doesn't match given pattern \"{regexPattern}\".",
+            Assert.Equal($"Rule failed: {ruleToTest.Description} Entity schema name {entity.SchemaName} doesn't match given pattern \"{regexPattern}\".",
                          results.FormatValidationResult());
         }
 

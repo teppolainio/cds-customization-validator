@@ -208,7 +208,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule
 
             var results = ruleToTest.Validate(validSolutionEntity);
 
-            Assert.Equal($"Rule: {ruleToTest.Description} failed. " +
+            Assert.Equal($"Rule failed: {ruleToTest.Description} " +
                          "Following attributes do not match given pattern: " +
                          "foo_customField, foo_c.",
                          results.FormatValidationResult());
