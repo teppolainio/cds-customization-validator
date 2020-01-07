@@ -1,6 +1,8 @@
 ﻿using CdsCustomizationValidator.Domain;
+using CommandLine;
 using Microsoft.Xrm.Tooling.Connector;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CdsCustomizationValidator.App
@@ -9,10 +11,27 @@ namespace CdsCustomizationValidator.App
     {
         static void Main(string[] args)
         {
+            var exitcode = Parser.Default
+                                 .ParseArguments<Options>(args)
+                                 .MapResult(opts => Execute(opts),
+                                            errors => HandleArgumentErrors(errors));
 
-            var solutionName = args[0];
-            var connStr = args[1];
-            var rulesFile = args[2];
+            if (exitcode != _EXIT_HELPREQUESTED)
+            {
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadKey();
+            }
+        }
+
+        private const int _EXIT_SUCCESS = 0;
+        private const int _EXIT_HELPREQUESTED = -1;
+        private const int _EXIT_ARGUMENTERROR = -2;
+
+        private static int Execute(Options commandlineOptions)
+        {
+            var solutionName = commandlineOptions.Solution;
+            var connStr = commandlineOptions.CdsConnectionString;
+            var rulesFile = commandlineOptions.RuleFile;
 
             var ruleRepo = new RuleRepository();
 
@@ -56,10 +75,27 @@ namespace CdsCustomizationValidator.App
                     }
                 }
 
-                Console.WriteLine("Press any key to exit...");
-                Console.ReadKey();
+                return _EXIT_SUCCESS;
             }
 
+        }
+
+        private static int HandleArgumentErrors(
+            IEnumerable<Error> errors)
+        {
+
+            var exitCode = _EXIT_ARGUMENTERROR;
+
+            if (errors.Any(x => x is HelpRequestedError || x is VersionRequestedError))
+            {
+                exitCode = _EXIT_HELPREQUESTED;
+            }
+            else
+            {
+                Console.WriteLine($"Command line argument errors {errors.Count()}.");
+            }
+
+            return exitCode;
         }
     }
 }
