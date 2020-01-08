@@ -82,9 +82,12 @@ namespace CdsCustomizationValidator.Domain {
         resultStr += $"Entity schema name {Entity.SchemaName} " +
                     $"doesn't match given pattern \"{ rule.Pattern }\".";
       }
-      else if(rule.Scope == RuleScope.Attribute) {
+      else if(rule.Scope == RuleScope.Attribute ||
+              rule.Scope == RuleScope.Lookup) {
 
-        resultStr += $"Following attributes do not match given pattern:";
+        resultStr += $"Following ";
+        resultStr += rule.Scope == RuleScope.Attribute ? "attributes" : "lookups";
+        resultStr += " do not match given pattern:";
 
         foreach(var attr in _failingAttributes) {
           resultStr += $" {attr.SchemaName},";

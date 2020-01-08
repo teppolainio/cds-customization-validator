@@ -1,18 +1,26 @@
-﻿using Microsoft.Xrm.Sdk.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FakeXrmEasy.Extensions;
+﻿using CdsCustomizationValidator.Domain;
 using CdsCustomizationValidator.Domain.Rule;
-using CdsCustomizationValidator.Domain;
-using Xunit;
+using FakeXrmEasy.Extensions;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Metadata;
+using System.Collections.Generic;
+using Xunit;
 
 namespace CdsCustomizationValidator.Test.Domain.Rule {
-  
+
   public class RegexRuleTest_LookupScope {
+
+
+    [Fact(DisplayName = "RegexRule: Lookup rule description is correct.")]
+    public void LookupRuleDescriptionIsCorrect() {
+      var scope = RuleScope.Lookup;
+
+      var rule = new RegexRule(_REGEX_PATTERN, scope);
+
+      Assert.Equal($"Schema name of a Lookup must match to regular expression pattern {_REGEX_PATTERN}.",
+                   rule.Description);
+
+    }
 
     [Fact(DisplayName = "RegexRule: OOB lookup on custom unmanaged entity must be skipped.")]
     public void OobLookupOnCustomUnmanagedEntityMustBeSkipped() {
@@ -153,7 +161,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule {
       var rule = new RegexRule(_REGEX_PATTERN, scope);
       var results = rule.Validate(solutionEntity);
 
-      Assert.Equal($"Rule: {rule.Description} Failed for entity \"My Entity\" (foo_MyEntity). Following lookups do not match given pattern: foo_MyCustomLookup.",
+      Assert.Equal($"Rule failed: {rule.Description} Following lookups do not match given pattern: foo_MyCustomLookup.",
                    results.FormatValidationResult());
     }
 
@@ -218,7 +226,43 @@ namespace CdsCustomizationValidator.Test.Domain.Rule {
       Assert.True(results.Passed);
     }
 
-    private const string _REGEX_PATTERN = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]Id*$";
+    [Fact(DisplayName = "RegexRule: Exluded lookup fields aren't checked on custom unmanaged entity.")]
+    public void ExcludedLookupsAreCheckedOnCustomUnmanagedEntity() {
+      var entity = new EntityMetadata() {
+        SchemaName = "foo_myEntity",
+      };
+      entity.SetSealedPropertyValue("IsManaged", false);
+      entity.SetSealedPropertyValue("IsCustomEntity", true);
+
+      var scope = RuleScope.Lookup;
+
+      var lookupAttr = new LookupAttributeMetadata() {
+        SchemaName = "foo_LookupFieldId2"
+      };
+      lookupAttr.SetSealedPropertyValue("IsCustomAttribute", true);
+      lookupAttr.SetSealedPropertyValue("IsManaged", false);
+
+      var primaryKeyAttr = new LookupAttributeMetadata() {
+        SchemaName = "foo_MyEntityId"
+      };
+      primaryKeyAttr.SetSealedPropertyValue("IsCustomAttribute", true);
+      primaryKeyAttr.SetSealedPropertyValue("IsManaged", false);
+
+      var attributes = new List<AttributeMetadata> {
+        lookupAttr,
+        primaryKeyAttr
+      };
+      var solutionEntity = new SolutionEntity(entity, attributes, true);
+
+      var excludedSchemaNames = new string[] { "foo_myEntity.foo_LookupFieldId2" };
+
+      var rule = new RegexRule(_REGEX_PATTERN, scope, excludedSchemaNames);
+      var results = rule.Validate(solutionEntity);
+
+      Assert.True(results.Passed);
+    }
+
+    private const string _REGEX_PATTERN = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*Id$";
 
   }
 

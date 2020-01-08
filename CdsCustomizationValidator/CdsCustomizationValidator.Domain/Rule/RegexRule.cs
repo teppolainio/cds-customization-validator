@@ -37,8 +37,12 @@ namespace CdsCustomizationValidator.Domain.Rule {
     /// </summary>
     public override string Description {
       get {
-        var sb = new StringBuilder("Schema name of an ");
-        sb.Append(Scope)
+        var sb = new StringBuilder("Schema name of a");
+        if(Scope != RuleScope.Lookup) {
+          sb.Append("n");
+        }
+        sb.Append(" ")
+          .Append(Scope)
           .Append(" must match to regular expression pattern ")
           .Append(Pattern)
           .Append(".");
@@ -182,6 +186,23 @@ namespace CdsCustomizationValidator.Domain.Rule {
                                             .Where(a => a.IsManaged != true &&
                                                         a.IsCustomAttribute == true);
 
+      return ValidateAttributes(solutionEntity, attributesToCheck);
+    }
+
+    private RegexValidationResult ValidateLookupScope(
+      SolutionEntity solutionEntity) {
+      var attributesToCheck = solutionEntity.Attributes
+                                            .Where(a => a.AttributeType == AttributeTypeCode.Lookup &&
+                                                        a.IsManaged != true &&
+                                                        a.IsCustomAttribute == true);
+
+      return ValidateAttributes(solutionEntity, attributesToCheck);
+    }
+
+    private RegexValidationResult ValidateAttributes(
+      SolutionEntity solutionEntity,
+      IEnumerable<AttributeMetadata> attributesToCheck) {
+
       var failingAttributes = new List<AttributeMetadata>();
 
       foreach(var attribute in attributesToCheck) {
@@ -202,12 +223,6 @@ namespace CdsCustomizationValidator.Domain.Rule {
                                        failingAttributes,
                                        this);
     }
-
-    private RegexValidationResult ValidateLookupScope(
-      SolutionEntity solutionEntity) {
-      throw new NotImplementedException();
-    }
-
 
   }
 }
