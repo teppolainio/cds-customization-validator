@@ -19,7 +19,11 @@ namespace CdsCustomizationValidator.Domain.Rule {
     /// <summary>
     /// Attributes of an entity.
     /// </summary>
-    Attribute
+    Attribute,
+    /// <summary>
+    /// Lookup (i.e. EntityReference) type of attribute of an entity.
+    /// </summary>
+    Lookup
   };
 
   /// <summary>
@@ -128,6 +132,9 @@ namespace CdsCustomizationValidator.Domain.Rule {
         case RuleScope.Attribute:
           validationResult = ValidateAttributeScope(solutionEntity);
           break;
+        case RuleScope.Lookup:
+          validationResult = ValidateLookupScope(solutionEntity);
+          break;
         default:
           throw new NotImplementedException(
               $"Implementation is missing for scope {Scope}.");
@@ -136,6 +143,7 @@ namespace CdsCustomizationValidator.Domain.Rule {
       return validationResult as ValidationResult;
     }
 
+    
     /// <summary>
     /// Regular expression pattern being applied to rule scope.
     /// </summary>
@@ -194,6 +202,12 @@ namespace CdsCustomizationValidator.Domain.Rule {
                                        failingAttributes,
                                        this);
     }
+
+    private RegexValidationResult ValidateLookupScope(
+      SolutionEntity solutionEntity) {
+      throw new NotImplementedException();
+    }
+
 
   }
 }
