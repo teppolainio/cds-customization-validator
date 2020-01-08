@@ -84,6 +84,9 @@ namespace CdsCustomizationValidator.Domain {
         case DTO.RuleScope.Attribute:
           scope = RuleScope.Attribute;
           break;
+        case DTO.RuleScope.Lookup:
+          scope = RuleScope.Lookup;
+          break;
         default:
           throw new NotImplementedException(
               $"No mapping for DTO rule scope {deserializedRule.scope}."

@@ -30,6 +30,7 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="Entity" />
       <xs:enumeration value="Attribute" />
+      <xs:enumeration value="Lookup" />
     </xs:restriction>
   </xs:simpleType>
 

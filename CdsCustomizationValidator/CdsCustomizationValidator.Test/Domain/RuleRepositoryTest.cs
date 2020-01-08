@@ -275,7 +275,7 @@ namespace CdsCustomizationValidator.Test.Domain {
       Assert.Contains("new_incorrect_Naming.my_field", excluded);
     }
 
-    [Fact(DisplayName = "RuleRepository: DTO.RegexRule pattern at entity scope with many exclusions.")]
+    [Fact(DisplayName = "RuleRepository: DTO.RegexRule pattern at attribute scope with many exclusions.")]
     public void DtoRegexRulePatternAtAttributeScopeWithManyExclusions() {
       var dtoRules = new DTO.CustomizationRule() {
         RegexRules = new DTO.RegexRule[]
@@ -307,6 +307,40 @@ namespace CdsCustomizationValidator.Test.Domain {
       Assert.Contains("new_incorrect_Naming.my_field", excluded);
       Assert.Contains("new_incorrect_Naming.my_field2", excluded);
       Assert.Contains("new_INcorrect.new_name", excluded);
+    }
+
+    [Fact(DisplayName = "RuleRepository: DTO.RegexRule pattern at lookup scope with many exclusions.")]
+    public void DtoRegexRulePatternAtLookupScopeWithManyExclusions() {
+      var dtoRules = new DTO.CustomizationRule() {
+        RegexRules = new DTO.RegexRule[]
+          {
+                    new DTO.RegexRule() {
+                        pattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*Id$",
+                        scope = DTO.RuleScope.Lookup,
+                        Exclude = new string[] {
+                            "new_incorrect_Naming.my_field",
+                            "new_incorrect_Naming.my_field2",
+                            "new_INcorrect.new_nameid"
+                        }
+                    }
+          }
+      };
+
+      var rules = RuleRepository.GetRules(dtoRules);
+
+      var rule = rules.Single() as RegexRule;
+
+      Assert.Equal(@"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*Id$",
+                   rule.Pattern.ToString());
+      Assert.Equal(RuleScope.Lookup, rule.Scope);
+
+      var excluded = GetInstanceField(rule.GetType(),
+                                      rule,
+                                      "_excludedSchemaNames") as ICollection<string>;
+      Assert.Equal(3, excluded.Count);
+      Assert.Contains("new_incorrect_Naming.my_field", excluded);
+      Assert.Contains("new_incorrect_Naming.my_field2", excluded);
+      Assert.Contains("new_INcorrect.new_nameid", excluded);
     }
 
     /// <summary>

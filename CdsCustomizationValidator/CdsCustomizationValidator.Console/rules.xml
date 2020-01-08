@@ -21,6 +21,10 @@
           scope="Attribute">
       <Exclude>new_inCorrectName.new_name</Exclude>
     </Rule>
+    <Rule pattern="^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*Id$"
+          scope="Lookup">
+      <Exclude>new_inCorrectName.new_lookup</Exclude>
+    </Rule>
   </RegexRules>
   
 </CustomizationRule>
