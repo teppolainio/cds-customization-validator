@@ -4,46 +4,47 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
 >
 
-    <xs:complexType name="DisallowSolutionToOwnManagedEntitiesRule">
-      <xs:attribute name="allow" type="xs:boolean"
-                    use="optional" default="false"/>
-    </xs:complexType>
+  <xs:complexType name="DisallowSolutionToOwnManagedEntitiesRule">
+    <xs:attribute name="allow" type="xs:boolean"
+                  use="optional" default="false"/>
+  </xs:complexType>
 
   <xs:complexType name="PrefixRule" abstract="true">
     <xs:attribute name ="schemaPrefix" type="xs:string"
                     use="required"/>
   </xs:complexType>
 
-    <xs:complexType name="AttributePrefixRule">
-      <xs:complexContent>
-        <xs:extension base="PrefixRule" />
-      </xs:complexContent>
-    </xs:complexType>
+  <xs:complexType name="AttributePrefixRule">
+    <xs:complexContent>
+      <xs:extension base="PrefixRule" />
+    </xs:complexContent>
+  </xs:complexType>
 
-    <xs:complexType name="EntityPrefixRule">
-      <xs:complexContent>
-        <xs:extension base="PrefixRule" />
-      </xs:complexContent>
-    </xs:complexType>
+  <xs:complexType name="EntityPrefixRule">
+    <xs:complexContent>
+      <xs:extension base="PrefixRule" />
+    </xs:complexContent>
+  </xs:complexType>
 
-    <xs:simpleType name="RuleScope">
-      <xs:restriction base="xs:string">
-        <xs:enumeration value="Entity" />
-        <xs:enumeration value="Attribute" />
-      </xs:restriction>
-    </xs:simpleType>
+  <xs:simpleType name="RuleScope">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Entity" />
+      <xs:enumeration value="Attribute" />
+      <xs:enumeration value="Lookup" />
+    </xs:restriction>
+  </xs:simpleType>
 
-    <xs:complexType name="RegexRule">
-      <xs:sequence>
-        <xs:element name="Exclude" type="xs:string"
-                    minOccurs="0" maxOccurs="unbounded"
+  <xs:complexType name="RegexRule">
+    <xs:sequence>
+      <xs:element name="Exclude" type="xs:string"
+                  minOccurs="0" maxOccurs="unbounded"
                     />
-      </xs:sequence>
-      <xs:attribute name="pattern" type="xs:string"
-                    use="required"/>
-      <xs:attribute name="scope" type="RuleScope"
-                    use="required"/>
-    </xs:complexType>
+    </xs:sequence>
+    <xs:attribute name="pattern" type="xs:string"
+                  use="required"/>
+    <xs:attribute name="scope" type="RuleScope"
+                  use="required"/>
+  </xs:complexType>
 
   <xs:element name="CustomizationRule" nillable="false" type="CustomizationRule" />
   <xs:complexType name="CustomizationRule">
@@ -52,11 +53,11 @@
                   minOccurs="0" maxOccurs="1"
                   type="DisallowSolutionToOwnManagedEntitiesRule" />
 
-      <xs:element name="EntityPrefixRule" 
+      <xs:element name="EntityPrefixRule"
                   minOccurs="0" maxOccurs="1"
                   type="EntityPrefixRule" />
 
-      <xs:element name="AttributePrefixRule" 
+      <xs:element name="AttributePrefixRule"
                   minOccurs="0" maxOccurs="1"
                   type="AttributePrefixRule" />
 
@@ -70,8 +71,8 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      
+
     </xs:all>
   </xs:complexType>
-  
+
 </xs:schema>
