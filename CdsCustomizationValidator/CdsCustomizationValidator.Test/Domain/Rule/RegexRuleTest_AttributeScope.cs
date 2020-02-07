@@ -249,6 +249,45 @@ namespace CdsCustomizationValidator.Test.Domain.Rule {
       Assert.True(results.Passed);
     }
 
+    [Fact(DisplayName = "RegexRule: Exclude automatically generated Base-suffixed attributes of Money type from validation.")]
+    public void ExcludeAutomaticallyGeneratedBaseAttributesOfMonyFromValidationTest() {
+
+      EntityMetadata entity = new EntityMetadata() {
+        SchemaName = "Account",
+      };
+      entity.SetSealedPropertyValue("IsManaged", true);
+      entity.SetSealedPropertyValue("IsCustomEntity", false);
+
+      var field1Metadata = new MoneyAttributeMetadata("foo_CustomField");
+      field1Metadata.SetSealedPropertyValue("IsManaged", false);
+      field1Metadata.SetSealedPropertyValue("IsCustomAttribute", true);
+
+      var field1MetadataBase = new MoneyAttributeMetadata("foo_customField_Base");
+      field1MetadataBase.SetSealedPropertyValue("IsManaged", false);
+      field1MetadataBase.SetSealedPropertyValue("IsCustomAttribute", true);
+      field1MetadataBase.CalculationOf = "foo_customField";
+
+      var attributes = new List<AttributeMetadata> {
+        field1Metadata,
+        field1MetadataBase
+      };
+
+      var isOwnedBySolution = false;
+
+      var validSolutionEntity = new SolutionEntity(entity,
+                                                   attributes,
+                                                   isOwnedBySolution);
+
+      var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+      var scope = RuleScope.Attribute;
+
+      var ruleToTest = new RegexRule(regexPattern, scope);
+
+      var results = ruleToTest.Validate(validSolutionEntity);
+
+      Assert.True(results.Passed);
+    }
+
   }
 
 }
