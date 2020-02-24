@@ -184,7 +184,9 @@ namespace CdsCustomizationValidator.Domain.Rule {
         SolutionEntity solutionEntity) {
       var attributesToCheck = solutionEntity.Attributes
                                             .Where(a => a.IsManaged != true &&
-                                                        a.IsCustomAttribute == true);
+                                                        a.IsCustomAttribute == true &&
+                                                        // Automatically generated for money kind of fields.
+                                                        !a.SchemaName.EndsWith("_Base"));
 
       return ValidateAttributes(solutionEntity, attributesToCheck);
     }
