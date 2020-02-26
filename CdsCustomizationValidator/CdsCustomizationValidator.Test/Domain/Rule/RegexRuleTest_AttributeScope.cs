@@ -250,7 +250,7 @@ namespace CdsCustomizationValidator.Test.Domain.Rule {
     }
 
     [Fact(DisplayName = "RegexRule: Exclude automatically generated Base-suffixed attributes of Money type from validation.")]
-    public void ExcludeAutomaticallyGeneratedBaseAttributesOfMonyFromValidationTest() {
+    public void ExcludeAutomaticallyGeneratedBaseAttributesOfMoneyFromValidationTest() {
 
       EntityMetadata entity = new EntityMetadata() {
         SchemaName = "Account",
@@ -286,6 +286,93 @@ namespace CdsCustomizationValidator.Test.Domain.Rule {
       var results = ruleToTest.Validate(validSolutionEntity);
 
       Assert.True(results.Passed);
+    }
+
+
+    [Fact(DisplayName = "RegexRule: Exclude automatically generated Name-suffixed attributes of Picklist type from validation.")]
+    public void ExcludeAutomaticallyGeneratedPicklistNameAttributesFromValidationTest() {
+
+      EntityMetadata entity = new EntityMetadata() {
+        SchemaName = "Account",
+      };
+      entity.SetSealedPropertyValue("IsManaged", true);
+      entity.SetSealedPropertyValue("IsCustomEntity", false);
+
+      var field1Metadata = new PicklistAttributeMetadata("foo_CustomField");
+      field1Metadata.SetSealedPropertyValue("IsManaged", false);
+      field1Metadata.SetSealedPropertyValue("IsCustomAttribute", true);
+
+      var field1MetadataBase = new AttributeMetadata {
+        SchemaName = "foo_customFieldName"
+      };
+      field1MetadataBase.SetSealedPropertyValue("IsManaged", false);
+      field1MetadataBase.SetSealedPropertyValue("IsCustomAttribute", true);
+      field1MetadataBase.SetSealedPropertyValue("AttributeOf", "sar_kohde");
+      field1MetadataBase.SetSealedPropertyValue("IsLogical", true);
+
+      var attributes = new List<AttributeMetadata> {
+        field1Metadata,
+        field1MetadataBase
+      };
+
+      var isOwnedBySolution = false;
+
+      var validSolutionEntity = new SolutionEntity(entity,
+                                                   attributes,
+                                                   isOwnedBySolution);
+
+      var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+      var scope = RuleScope.Attribute;
+
+      var ruleToTest = new RegexRule(regexPattern, scope);
+
+      var results = ruleToTest.Validate(validSolutionEntity);
+
+      Assert.True(results.Passed);
+    }
+
+    [Fact(DisplayName = "RegexRule: Do not exclude Name-suffixed Picklist attribute from validation.")]
+    public void DoNotExcludeNameSuffixedPicklistFromValidationTest() {
+
+      EntityMetadata entity = new EntityMetadata() {
+        SchemaName = "Account",
+      };
+      entity.SetSealedPropertyValue("IsManaged", true);
+      entity.SetSealedPropertyValue("IsCustomEntity", false);
+
+      var field1Metadata = new PicklistAttributeMetadata("foo_customFieldName");
+      field1Metadata.SetSealedPropertyValue("IsManaged", false);
+      field1Metadata.SetSealedPropertyValue("IsCustomAttribute", true);
+
+      var field1MetadataBase = new AttributeMetadata {
+        SchemaName = "foo_customFieldNameNameName"
+      };
+      field1MetadataBase.SetSealedPropertyValue("IsManaged", false);
+      field1MetadataBase.SetSealedPropertyValue("IsCustomAttribute", true);
+      field1MetadataBase.SetSealedPropertyValue("AttributeOf", "sar_kohde");
+      field1MetadataBase.SetSealedPropertyValue("IsLogical", true);
+
+      var attributes = new List<AttributeMetadata> {
+        field1Metadata,
+        field1MetadataBase
+      };
+
+      var isOwnedBySolution = false;
+
+      var validSolutionEntity = new SolutionEntity(entity,
+                                                   attributes,
+                                                   isOwnedBySolution);
+
+      var regexPattern = @"^[A-Za-z]+_[A-Z]{1}[a-z]{1}[A-Za-z]*$";
+      var scope = RuleScope.Attribute;
+
+      var ruleToTest = new RegexRule(regexPattern, scope);
+
+      var results = ruleToTest.Validate(validSolutionEntity);
+
+      Assert.False(results.Passed);
+      Assert.Contains("foo_customFieldName", results.FormatValidationResult());
+      Assert.DoesNotContain("foo_customFieldNameNameName", results.FormatValidationResult());
     }
 
   }

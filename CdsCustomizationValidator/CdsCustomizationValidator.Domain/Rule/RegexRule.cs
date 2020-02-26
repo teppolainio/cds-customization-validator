@@ -186,7 +186,14 @@ namespace CdsCustomizationValidator.Domain.Rule {
                                             .Where(a => a.IsManaged != true &&
                                                         a.IsCustomAttribute == true &&
                                                         // Automatically generated for money kind of fields.
-                                                        !a.SchemaName.EndsWith("_Base"));
+                                                        !(a is MoneyAttributeMetadata &&
+                                                          a.SchemaName.EndsWith("_Base")) &&
+                                                        // Automatically generated for picklist kind of fields.
+                                                        !(a is AttributeMetadata &&
+                                                          a.AttributeOf != null &&
+                                                          a.IsLogical == true &&
+                                                          a.SchemaName.EndsWith("Name"))
+                                                        );
 
       return ValidateAttributes(solutionEntity, attributesToCheck);
     }
