@@ -19,7 +19,7 @@ namespace CdsCustomizationValidator.App {
 
     [Option("rulefile",
             Required = true,
-            HelpText = "Relative path to file containing validation rules.")]
+            HelpText = "Relative or absolute path to file containing validation rules.")]
     public string RuleFile { get; set; }
 
   }

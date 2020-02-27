@@ -26,7 +26,10 @@ namespace CdsCustomizationValidator.Domain {
 
       var serializer = new XmlSerializer(typeof(DTO.CustomizationRule));
 
-      var filename = Environment.CurrentDirectory + "\\" + rulesFileLocation;
+      var filename = rulesFileLocation;
+      if(!IsPathValidRootedLocal(filename)) {
+        filename = Environment.CurrentDirectory + "\\" + rulesFileLocation;
+      }
 
       DTO.CustomizationRule rules = null;
 
@@ -80,6 +83,16 @@ namespace CdsCustomizationValidator.Domain {
 
       return retval;
     }
+
+    // https://stackoverflow.com/a/11636052
+    private bool IsPathValidRootedLocal(string pathString) {
+      Uri pathUri;
+      var isValidUri = Uri.TryCreate(pathString,
+                                     UriKind.Absolute,
+                                     out pathUri);
+      return isValidUri && pathUri != null && pathUri.IsLoopback;
+    }
+
   }
 
 }
