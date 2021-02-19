@@ -46,7 +46,7 @@ namespace CdsCustomizationValidator.App {
         var results = solutionValidator.Validate(solutionEntitities, rules);
 
         foreach(var result in results) {
-          Console.Write($"{result.Key.LogicalName}: ");
+          Console.Write($"{result.Key.SchemaName}: ");
           if(result.Value.All(r => r.Passed)) {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Passed validation.");

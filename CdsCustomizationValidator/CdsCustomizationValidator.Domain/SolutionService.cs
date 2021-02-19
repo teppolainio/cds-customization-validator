@@ -62,7 +62,7 @@ namespace CdsCustomizationValidator.Domain {
 
       foreach(var entity in entitiesInSolution) {
 
-        Console.WriteLine($"Handling entity {entity.LogicalName}.");
+        Console.WriteLine($"Handling entity {entity.SchemaName}.");
 
         if(ownedEntities.All(e => e.GetAttributeValue<Guid?>("objectid") != entity.MetadataId)) {
           var attributeMetadata = GetAttributesInSolution(entity, uniqueSolutionName);
