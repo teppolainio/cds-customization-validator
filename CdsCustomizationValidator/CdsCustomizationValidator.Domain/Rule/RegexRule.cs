@@ -37,36 +37,9 @@ namespace CdsCustomizationValidator.Domain.Rule {
     /// </summary>
     public override string Description {
       get {
-        var sb = new StringBuilder("Schema name of a");
-        if(Scope != RuleScope.Lookup) {
-          sb.Append("n");
-        }
-        sb.Append(" ")
-          .Append(Scope)
-          .Append(" must match to regular expression pattern ")
-          .Append(Pattern)
-          .Append(".");
+        var sb = GetDescriptionCommonPart();
 
-        if(_excludedSchemaNames != null &&
-            _excludedSchemaNames.Any()) {
-          sb.Append(" ")
-            .Append(Scope)
-            .Append(" ");
-
-          for(int i = 0; i < _excludedSchemaNames.Count; i++) {
-            if(i > 0) {
-              if(i < (_excludedSchemaNames.Count - 1)) {
-                sb.Append(", ");
-              }
-              else {
-                sb.Append(" and ");
-              }
-            }
-            sb.Append(_excludedSchemaNames.ElementAt(i));
-          }
-
-          sb.Append(" are excluded.");
-        }
+        GetDescriptionExcludedPart(sb, null);
 
         return sb.ToString();
       }
@@ -147,7 +120,7 @@ namespace CdsCustomizationValidator.Domain.Rule {
       return validationResult as ValidationResult;
     }
 
-    
+
     /// <summary>
     /// Regular expression pattern being applied to rule scope.
     /// </summary>
@@ -157,6 +130,24 @@ namespace CdsCustomizationValidator.Domain.Rule {
     /// Scope of the rule.
     /// </summary>
     internal RuleScope Scope { get; }
+
+    /// <summary>
+    /// Returns description of the rule for given <paramref name="entity"/>.
+    /// This changes the appearance of the exclusion list to contain only
+    /// those exlusions which are valid for given
+    /// <paramref name="entity"/>.
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <returns>
+    /// Description of the rule as effective for given
+    /// <paramref name="entity"/>.
+    /// </returns>
+    internal object GetDescriptionForEntity(EntityMetadata entity) {
+      var sb = GetDescriptionCommonPart();
+      GetDescriptionExcludedPart(sb, entity.SchemaName);
+
+      return sb.ToString();
+    }
 
     private readonly ICollection<string> _excludedSchemaNames;
 
@@ -231,6 +222,67 @@ namespace CdsCustomizationValidator.Domain.Rule {
       return new RegexValidationResult(solutionEntity.Entity,
                                        failingAttributes,
                                        this);
+    }
+
+    private StringBuilder GetDescriptionCommonPart() {
+      var sb = new StringBuilder("Schema name of a");
+      if(Scope != RuleScope.Lookup) {
+        sb.Append("n");
+      }
+      sb.Append(" ")
+        .Append(Scope)
+        .Append(" must match to regular expression pattern ")
+        .Append(Pattern)
+        .Append(".");
+      return sb;
+    }
+
+    private void GetDescriptionExcludedPart(
+      StringBuilder sb,
+      string entitySchemaName) {
+
+      var excluded = _excludedSchemaNames;
+      if(!string.IsNullOrWhiteSpace(entitySchemaName)) {
+        if(Scope == RuleScope.Entity) {
+          excluded = excluded.Where(e => e.Equals(entitySchemaName))
+                             .ToList();
+        }
+        else if(Scope == RuleScope.Attribute ||
+                Scope == RuleScope.Lookup) {
+          excluded = excluded.Where(e => e.StartsWith($"{entitySchemaName}."))
+                             .ToList();
+        }
+      }
+
+      if(excluded == null) {
+        return;
+      }
+      if(excluded.Any()) {
+        sb.Append(" ")
+          .Append(Scope)
+          .Append(" ");
+
+        for(int i = 0; i < excluded.Count; i++) {
+          if(i > 0) {
+            if(i < (excluded.Count - 1)) {
+              sb.Append(", ");
+            }
+            else {
+              sb.Append(" and ");
+            }
+          }
+          sb.Append(excluded.ElementAt(i));
+        }
+
+        sb.Append(" are excluded.");
+      }
+      else {
+        sb.Append(" No ")
+         .Append(Scope)
+         .Append(" are excluded on configuration for ")
+         .Append(entitySchemaName)
+         .Append(".");
+      }
     }
 
   }

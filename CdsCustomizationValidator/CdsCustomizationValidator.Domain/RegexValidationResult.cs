@@ -75,7 +75,7 @@ namespace CdsCustomizationValidator.Domain {
         return base.FormatValidationResult();
       }
 
-      string resultStr = $"Rule failed: {ValidatedRule.Description} ";
+      string resultStr = $"Rule failed: {rule.GetDescriptionForEntity(Entity)} ";
 
       if(rule.Scope == RuleScope.Entity) {
 
